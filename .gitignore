@@ -6,3 +6,4 @@ research/doc-*.md
 
 # internal research notes (curriculum context, raw doc copies) stay local
 research/
+dist/

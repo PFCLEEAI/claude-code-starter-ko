@@ -604,7 +604,7 @@ flowchart LR
     <p>상황: 팀 프로젝트 웹페이지에 이미지 생성 API를 붙이는데, GitHub에도 올려야 해요. Claude Code에 이렇게 부탁해요.</p>
     <pre>API 키는 .env 파일에 넣고, .gitignore에 .env를 추가해 줘.
 코드에는 키를 직접 적지 말고 .env에서 읽어 오게 해 줘.</pre>
-    <p>결과: 키는 내 컴퓨터의 <code>.env</code>에만 남고, GitHub에 올라가는 코드에는 키가 안 보여요. 키 값 자체는 대화창에 붙여 넣지 말고 <code>.env</code> 파일을 직접 열어 적는 게 더 안전해요.</p>
+    <p>결과: 키는 내 컴퓨터의 <code>.env</code>에만 남고, GitHub에 올라가는 코드에는 키가 안 보여요. 키 값 자체는 대화창에 붙여 넣지 말고 <code>.env</code> 파일을 직접 열어 적는 게 더 안전해요. 단, 브라우저에서 돌아가는 웹페이지 코드에 키를 넣으면 방문자 누구나 볼 수 있어요. 키를 쓰는 부분은 서버 쪽(예: Vercel 서버리스 함수)에서만 돌게 해 달라고 Claude에게 부탁하세요.</p>
   </div>
 </section>
 
@@ -638,7 +638,7 @@ flowchart LR
   M --> T
   P --> T
   MCP --> T
-  H -->|"도구 전후·세션 시작·끝"| T
+  H -->|"도구 전후 등"| T
   M --> SA
   PL --> S
   PL --> MCP
@@ -677,7 +677,7 @@ flowchart LR
   <p><strong>만드는 법</strong>은 두 가지예요.</p>
   <ol class="steps">
     <li><code>/init</code>을 입력하면 Claude가 폴더를 살펴보고 시작용 <code>CLAUDE.md</code>를 만들어 줘요. 이미 있으면 덮어쓰지 않고 고칠 점을 제안해요.</li>
-    <li><code>/memory</code>를 입력하면 전역·프로젝트·로컬 파일 목록이 뜨고, 골라서 바로 편집할 수 있어요. 아직 없는 파일을 고르면 새로 만들어 줘요.</li>
+    <li><code>/memory</code>를 입력하면 전역·프로젝트·로컬 파일 목록이 뜨고, 골라서 바로 편집할 수 있어요. 아직 없는 파일을 고르면 새로 만들어 줘요. 데스크톱 앱에서는 "CLAUDE.md에 추가해줘"라고 말하면 돼요.</li>
   </ol>
   <p>잘 읽혔는지는 <code>/context</code>를 입력해서 <strong>Memory files</strong> 목록에서 확인해요.</p>
 
@@ -747,7 +747,7 @@ flowchart LR
     <div class="table-wrap"><table>
       <thead><tr><th>모드 (데스크톱 앱 이름)</th><th>묻지 않고 하는 일</th><th>이럴 때</th></tr></thead>
       <tbody>
-        <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만. 나머지는 거절</td><td>자동화 스크립트용 (터미널 전용)</td></tr>
+        <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만. 나머지는 거절</td><td>자동화 스크립트·CI용</td></tr>
         <tr><td><code>bypassPermissions</code> (Bypass permissions)</td><td>전부</td><td>격리된 컨테이너·가상머신 전용. 입문자는 쓰지 마세요</td></tr>
       </tbody>
     </table></div>
@@ -831,7 +831,7 @@ description: 대구 로컬 카페 브랜드 말투로 인스타 캡션을 쓴다
     <li>데스크톱 앱: 입력창 옆 <strong>+</strong> 버튼 → <strong>Plugins</strong> → <strong>Add plugin</strong></li>
   </ul>
   <div class="example"><span class="label">🧪 예시</span>
-    <p>상황: 브랜드 스킬을 처음 만들어 보는데, 스킬 만들기를 도와주는 세팅을 받아 쓰고 싶어요.</p>
+    <p>상황: 브랜드 스킬을 처음 만들어 보는데, 스킬이 잘 작동하는지 시험하고 다듬는 걸 도와주는 세팅을 받아 쓰고 싶어요.</p>
     <pre>/plugin install skill-creator@claude-plugins-official</pre>
     <p>결과: 공식 마켓플레이스에서 <code>skill-creator</code> 플러그인이 설치돼요. 설치 요약에 바로 켜졌는지, <code>/reload-plugins</code>를 실행해야 하는지 나와요.</p>
   </div>
@@ -1347,7 +1347,7 @@ flowchart TD
     <div class="card"><h4>9. <kbd>Esc</kbd> <kbd>Esc</kbd> 되돌리기</h4><p>빈 입력창에서 두 번 누르면 되감기 메뉴가 떠요. <code>/rewind</code>와 같아요. 파일과 대화를 이전 시점으로 돌려요.</p></div>
     <div class="card"><h4>10. <code>claude -c</code> 어제 하던 거</h4><p>터미널에서 이렇게 켜면 이 폴더의 최근 대화를 이어가요. 골라서 열려면 <code>/resume</code>.</p></div>
   </div>
-  <div class="callout note">📌 2·9·10번은 터미널 기준이에요. 데스크톱 앱 Code 탭에서는 전송 버튼 옆 모드 선택기로 권한 모드를 바꾸고, 지난 대화는 왼쪽 세션 목록에서 열어요.</div>
+  <div class="callout note">📌 2·4·9·10번은 터미널 기준이에요. 데스크톱 앱 Code 탭에서는 전송 버튼 옆 모드 선택기로 권한 모드를 바꾸고, 지난 대화는 왼쪽 세션 목록에서 열어요.</div>
   <div class="callout tip">💡 한 개만 더 고르라면 <code>/btw</code>예요. "아까 그 파일 이름이 뭐였지?" 같은 곁가지 질문을 대화 기록에 안 남기고 물어볼 수 있어요.</div>
   <div class="callout warn">⚠️ <code>/clear</code>와 <code>/compact</code>는 둘 다 자리를 비우지만 결과가 달라요. <code>/clear</code>는 대화를 통째로 새로 시작하고, <code>/compact</code>는 요약본을 남겨서 이어가요. 이전 대화가 필요해지면 <code>/resume</code>으로 돌아갈 수 있어요.</div>
   <div class="example"><span class="label">🧪 예시</span><p>상황: 대구 브랜드 리서치를 한 시간 했더니 답이 앞뒤가 안 맞기 시작해요.</p><pre>/context
@@ -1748,7 +1748,7 @@ node_modules/
   C --> D["🌐 공개 URL<br/>친구에게 공유"]</pre>
   <figcaption>처음 연결만 해 두면 push 한 번이 곧 배포예요.</figcaption></figure>
   <div class="analogy"><strong>비유</strong> GitHub는 원고를 넣는 우편함, Vercel은 우편함에 새 원고가 들어오는 순간 알림을 받고 바로 인쇄해 서점에 거는 출판사예요. 나는 원고만 넣으면 돼요.</div>
-  <div class="callout note">📌 <code>.env</code>는 GitHub에 안 올라가니까 Vercel도 키를 몰라요. 내 컴퓨터에선 잘 되던 사이트가 배포 후 깨진다면 대개 이 이유예요. Vercel 프로젝트의 <strong>Settings → Environment Variables</strong>에 같은 이름과 값을 직접 넣어 줘야 해요.</div>
+  <div class="callout note">📌 <code>.env</code>는 GitHub에 안 올라가니까 Vercel도 키를 몰라요. 내 컴퓨터에선 잘 되던 사이트가 배포 후 깨진다면 대개 이 이유예요. Vercel 프로젝트의 <strong>Settings → Environment Variables</strong>에 같은 이름과 값을 직접 넣어 줘야 해요. 환경 변수도 서버 쪽 코드에서만 읽어야 안전해요.</div>
   <div class="example"><span class="label">🧪 예시</span><p>상황: Vercel에 연결해 둔 대구 로컬 카페 랜딩페이지의 메인 문구를 바꾸고 싶어요.</p><pre>메인 문구를 "대구의 아침, 한 잔의 커피"로 바꾸고 커밋하고 push해줘.</pre><p>결과: push가 끝나고 잠시 뒤 Vercel 공개 URL을 새로고침하면 바뀐 문구가 보여요. Vercel 사이트에 따로 들어가서 버튼을 누를 필요는 없어요.</p></div>
 
   <h3 id="github-with-claude">Claude Code로 말로 하는 Git</h3>

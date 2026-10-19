@@ -28,7 +28,7 @@
   M --> T
   P --> T
   MCP --> T
-  H -->|"도구 전후·세션 시작·끝"| T
+  H -->|"도구 전후 등"| T
   M --> SA
   PL --> S
   PL --> MCP
@@ -67,7 +67,7 @@
   <p><strong>만드는 법</strong>은 두 가지예요.</p>
   <ol class="steps">
     <li><code>/init</code>을 입력하면 Claude가 폴더를 살펴보고 시작용 <code>CLAUDE.md</code>를 만들어 줘요. 이미 있으면 덮어쓰지 않고 고칠 점을 제안해요.</li>
-    <li><code>/memory</code>를 입력하면 전역·프로젝트·로컬 파일 목록이 뜨고, 골라서 바로 편집할 수 있어요. 아직 없는 파일을 고르면 새로 만들어 줘요.</li>
+    <li><code>/memory</code>를 입력하면 전역·프로젝트·로컬 파일 목록이 뜨고, 골라서 바로 편집할 수 있어요. 아직 없는 파일을 고르면 새로 만들어 줘요. 데스크톱 앱에서는 "CLAUDE.md에 추가해줘"라고 말하면 돼요.</li>
   </ol>
   <p>잘 읽혔는지는 <code>/context</code>를 입력해서 <strong>Memory files</strong> 목록에서 확인해요.</p>
 
@@ -137,7 +137,7 @@
     <div class="table-wrap"><table>
       <thead><tr><th>모드 (데스크톱 앱 이름)</th><th>묻지 않고 하는 일</th><th>이럴 때</th></tr></thead>
       <tbody>
-        <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만. 나머지는 거절</td><td>자동화 스크립트용 (터미널 전용)</td></tr>
+        <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만. 나머지는 거절</td><td>자동화 스크립트·CI용</td></tr>
         <tr><td><code>bypassPermissions</code> (Bypass permissions)</td><td>전부</td><td>격리된 컨테이너·가상머신 전용. 입문자는 쓰지 마세요</td></tr>
       </tbody>
     </table></div>
@@ -221,7 +221,7 @@ description: 대구 로컬 카페 브랜드 말투로 인스타 캡션을 쓴다
     <li>데스크톱 앱: 입력창 옆 <strong>+</strong> 버튼 → <strong>Plugins</strong> → <strong>Add plugin</strong></li>
   </ul>
   <div class="example"><span class="label">🧪 예시</span>
-    <p>상황: 브랜드 스킬을 처음 만들어 보는데, 스킬 만들기를 도와주는 세팅을 받아 쓰고 싶어요.</p>
+    <p>상황: 브랜드 스킬을 처음 만들어 보는데, 스킬이 잘 작동하는지 시험하고 다듬는 걸 도와주는 세팅을 받아 쓰고 싶어요.</p>
     <pre>/plugin install skill-creator@claude-plugins-official</pre>
     <p>결과: 공식 마켓플레이스에서 <code>skill-creator</code> 플러그인이 설치돼요. 설치 요약에 바로 켜졌는지, <code>/reload-plugins</code>를 실행해야 하는지 나와요.</p>
   </div>
