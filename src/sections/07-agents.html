@@ -1,0 +1,292 @@
+<section id="agents" class="chapter" data-title="에이전트 개념" data-emoji="🤖">
+  <h2>에이전트, 그림으로 이해하기</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>챗봇은 <strong>답을 주고</strong>, 에이전트는 <strong>직접 해요</strong>. 파일을 읽고, 고치고, 확인하는 루프를 스스로 돌아요.</li>
+    <li>모델이 엔진이라면 Claude Code는 차체예요. 여러분이 쓰는 CLAUDE.md, 스킬, 훅, 서브에이전트가 그 차를 내 손에 맞게 튜닝하는 일이에요.</li>
+    <li>잘 굴리는 비결은 세 가지예요. 컨텍스트를 가볍게, 완료 기준을 분명하게, 위험한 순간엔 사람이 직접 확인하기.</li>
+  </ul></div>
+
+  <p>이 장은 수업에서 "에이전트", "하네스", "루프" 같은 말이 나올 때 펼쳐 보는 그림책이에요. 개념마다 그림 하나씩 붙여 뒀으니, 글보다 그림을 먼저 봐도 괜찮아요.</p>
+
+  <!-- 1 -->
+  <h3 id="agents-chatbot">챗봇 vs 에이전트: 답하는 AI와 일하는 AI</h3>
+  <p>Claude.ai 채팅창에 "대구 로컬 브랜드 조사해 줘"라고 하면 답변 글이 돌아와요. 그걸 복사해서 파일로 저장하고 정리하는 건 여러분 몫이에요.</p>
+  <p>Claude Code에 같은 말을 하면 조금 달라요. 폴더를 살펴보고, 검색하고, <code>brands.md</code> 파일을 직접 만들고, 빠진 게 없는지 다시 읽어 봐요. 결과물이 <strong>파일</strong>로 남아요.</p>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph C["챗봇"]
+    C1["내 질문"] --> C2["답변 글"] --> C3["복사·정리는 내가"]
+  end
+  subgraph A["에이전트"]
+    A1["내 요청"] --> A2["파일 읽기·검색"] --> A3["파일 만들기·수정"] --> A4["스스로 확인"]
+    A4 -->|"부족하면"| A2
+  end
+  </pre><figcaption>챗봇은 말로 끝나고, 에이전트는 작업 결과가 폴더에 남아요.</figcaption></figure>
+  <div class="analogy"><strong>비유</strong> 챗봇은 전화로 레시피를 알려 주는 친구, 에이전트는 우리 집 부엌에 와서 직접 요리하고 간까지 보는 친구예요. 대신 부엌에 들일 땐 어디까지 만져도 되는지 정해 줘야 해요(권한).</div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 팀 프로젝트로 대구 로컬 카페 브랜드 5곳을 정리해야 해요.</p><pre>대구 로컬 카페 브랜드 5곳을 조사해서
+이름, 대표 메뉴, 인스타 계정을 표로 만들어 brands.md에 저장해 줘.</pre><p>결과: 채팅창에서는 표가 담긴 답변 글로 끝나요. Claude Code에서는 학습 폴더에 <code>brands.md</code> 파일이 생기고, 파일을 열면 표가 그대로 들어 있어요.</p></div>
+
+  <!-- 2 -->
+  <h3 id="agents-loop">에이전트 루프: 살펴보고 → 하고 → 확인하고</h3>
+  <p>Claude Code는 일을 끝낼 때까지 세 단계를 계속 반복해요. 공식 문서에서는 이걸 에이전트 루프(agentic loop)라고 불러요.</p>
+  <ol class="steps">
+    <li><strong>컨텍스트 모으기</strong>: 파일을 읽고, 검색하고, 무엇을 바꿔야 할지 파악해요.</li>
+    <li><strong>행동하기</strong>: 파일을 고치고, 명령어를 실행해요.</li>
+    <li><strong>결과 확인하기</strong>: 잘 됐는지 확인하고, 아니면 1번으로 돌아가 방법을 바꿔요.</li>
+  </ol>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  G["① 컨텍스트 모으기<br/>파일 읽기·검색"] --> T["② 행동하기<br/>파일 수정·명령 실행"]
+  T --> V["③ 결과 확인<br/>잘 됐나?"]
+  V -->|"아직이에요"| G
+  V -->|"됐어요"| D["완료 보고"]
+  U["나"] -.->|"Esc로 언제든 끼어들기"| T
+  </pre><figcaption>사람은 루프 바깥에서 지켜보다가 언제든 방향을 틀 수 있어요.</figcaption></figure>
+  <p>실제 예를 볼게요. 학습 폴더에서 이렇게 요청했다고 해요.</p>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>notes 폴더에 있는 올리브영 신상품 메모들을 읽고,
+카테고리별로 정리한 summary.md를 만들어 줘.
+다 만들면 메모 개수와 summary에 들어간 상품 개수가 맞는지 확인해 줘.</pre></div>
+  <p>Claude는 먼저 <code>notes</code> 폴더 목록을 보고 파일을 읽어요(①). 그다음 <code>summary.md</code>를 써요(②). 마지막으로 개수를 세어 보다가 빠진 상품이 있으면 다시 읽으러 가요(③ → ①). 마지막 문장처럼 <strong>확인 방법</strong>을 같이 주면 ③단계가 훨씬 정확해져요.</p>
+  <div class="callout tip">💡 Claude가 엉뚱한 방향으로 가면 <kbd>Esc</kbd>를 눌러 멈추세요. 지금까지 한 작업은 남아 있고, 바로 새 지시를 줄 수 있어요.</div>
+
+  <!-- 3 -->
+  <h3 id="agents-context">컨텍스트 관리: 책상을 정리하는 도구 다섯 가지</h3>
+  <p>컨텍스트(context)는 Claude가 지금 보고 있는 책상이에요. 대화, 읽은 파일, 명령 결과가 전부 이 책상에 쌓여요. 책상이 꽉 차면 답이 흐려지고 앞에서 한 지시를 놓치기 쉬워요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>도구</th><th>하는 일</th><th>언제</th></tr></thead>
+    <tbody>
+      <tr><td><code>/context</code></td><td>지금 컨텍스트를 무엇이 얼마나 차지하는지 색깔 격자로 보여줘요.</td><td>답이 이상해졌을 때, 먼저 확인용</td></tr>
+      <tr><td><code>/compact [지시]</code></td><td>지금까지 대화를 요약해서 공간을 비워요. 같은 대화는 이어져요.</td><td>같은 작업을 계속하는데 대화가 길어졌을 때</td></tr>
+      <tr><td><code>/clear</code></td><td>빈 컨텍스트로 새 대화를 시작해요. 프로젝트 메모리(CLAUDE.md)는 그대로예요.</td><td>전혀 다른 작업으로 넘어갈 때</td></tr>
+      <tr><td><code>/resume</code></td><td>예전 대화로 돌아가요.</td><td><code>/clear</code> 했는데 이전 대화가 다시 필요할 때</td></tr>
+      <tr><td><code>/btw [질문]</code></td><td>대화 기록에 남기지 않고 옆길 질문을 해요.</td><td>"아까 그 파일 이름 뭐였지?" 같은 짧은 질문</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="diagram"><pre class="mermaid">
+flowchart TD
+  S["답이 흐려지고<br/>지시를 자꾸 놓쳐요"] --> C["먼저 /context 로 확인"]
+  C --> Q{"같은 작업을<br/>계속하나요?"}
+  Q -->|"네"| K["요약하기<br/>/compact 결정사항 위주로"]
+  Q -->|"아니요, 새 작업"| N["새 대화 시작<br/>/clear"]
+  K --> R["중요한 규칙은<br/>CLAUDE.md에 적어 두기"]
+  N --> R
+  </pre><figcaption>헷갈리면 "같은 일이면 compact, 다른 일이면 clear"만 기억하세요.</figcaption></figure>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 올리브영 상품 기획 대화를 두 시간째 하는 중이에요. 처음에 정한 "가격은 원 단위로 쓰기"를 Claude가 자꾸 잊어요.</p><pre>/context
+/compact 타깃 고객, 고른 상품 3개, 가격 표기 규칙만 남겨 줘</pre><p>결과: <code>/context</code> 격자를 보면 대화 기록이 칸 대부분을 차지하고 있어요. <code>/compact</code> 뒤에는 긴 대화가 짧은 요약으로 바뀌고, 같은 대화를 가벼운 책상에서 이어 가요.</p></div>
+  <div class="callout note">📌 프로젝트 루트의 CLAUDE.md는 <code>/compact</code> 뒤에도 다시 읽혀요. 대화에서만 말한 지시는 요약 중에 사라질 수 있어요. 계속 지켜야 할 규칙이면 CLAUDE.md에 옮겨 두세요.</div>
+
+  <!-- 4 -->
+  <h3 id="agents-harness">하네스(harness): 엔진과 차체</h3>
+  <p>Claude 모델 자체는 글을 읽고 쓰는 능력만 있어요. 파일을 열고, 명령을 실행하고, 권한을 묻고, 대화를 기억하게 해 주는 건 모델을 감싸고 있는 프로그램이에요. 이 바깥 틀을 <strong>하네스(harness)</strong>라고 불러요. Claude Code가 바로 하네스예요.</p>
+  <div class="analogy"><strong>비유</strong> 모델은 엔진, 하네스는 차체·핸들·브레이크예요. 엔진이 아무리 좋아도 핸들과 브레이크가 없으면 도로에 나갈 수 없어요. 같은 엔진이라도 어떤 차에 얹느냐에 따라 운전감이 달라져요.</div>
+  <figure class="diagram"><pre class="mermaid">
+flowchart TD
+  M["모델 = 엔진<br/>생각하고 글 쓰기"]
+  subgraph H["하네스 = Claude Code"]
+    L["에이전트 루프"]
+    T["도구<br/>파일·터미널·검색"]
+    P["권한 = 브레이크"]
+    X["컨텍스트·세션 관리"]
+  end
+  subgraph ME["내가 하는 튜닝"]
+    CM["CLAUDE.md"]
+    SK["스킬"]
+    HK["훅"]
+    SA["서브에이전트"]
+  end
+  M --> H
+  ME --> H
+  </pre><figcaption>모델은 Anthropic이 만들고, 하네스 튜닝은 여러분 몫이에요.</figcaption></figure>
+  <p><strong>하네스 엔지니어링</strong>은 이 차를 내 일에 맞게 튜닝하는 걸 말해요. 그림의 '내가 하는 튜닝' 상자에 있는 CLAUDE.md, 스킬, 훅, 서브에이전트처럼 수업에서 배우는 것들이 전부 여기에 들어가요.</p>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 피치덱 작업을 할 때마다 "답은 한국어로, 파일은 output 폴더에"를 매번 다시 말하고 있어요.</p><pre># CLAUDE.md에 한 번만 적어 두기
+- 답은 항상 한국어로
+- 만든 파일은 output 폴더에 저장</pre><p>결과: 적어 두기 전엔 매번 같은 말을 붙여야 했어요. 적어 둔 뒤엔 "피치덱 표지 문구 써 줘"만 해도 한국어로 써서 output 폴더에 저장해요. 엔진(모델)은 그대로고 차체(하네스)만 튜닝한 거예요.</p></div>
+
+  <!-- 5 -->
+  <h3 id="agents-patterns">워크플로우 vs 에이전트, 그리고 5가지 패턴</h3>
+  <p>Anthropic은 AI로 일을 엮는 방식을 둘로 나눠요. <strong>워크플로우(workflow)</strong>는 사람이 미리 정해 둔 길을 따라가요. <strong>에이전트(agent)</strong>는 다음에 뭘 할지 모델이 그때그때 정해요.</p>
+  <div class="analogy"><strong>비유</strong> 워크플로우는 정해진 노선을 도는 시내버스, 에이전트는 목적지만 말하면 길을 알아서 고르는 택시예요. 버스는 예측 가능하고, 택시는 유연해요.</div>
+  <p>정해진 순서로 매번 똑같이 돌아가야 하면 워크플로우가 맞아요(n8n 자동화가 대표적이에요). 무엇을 해야 할지 상황마다 다르면 에이전트가 맞아요. 아래 다섯 패턴은 Anthropic 글 <a class="ref" href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents ↗</a>에서 소개한 것들이에요.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>패턴</th><th>한 줄 설명</th><th>일상 예</th></tr></thead>
+    <tbody>
+      <tr><td>① 프롬프트 체이닝(chaining)</td><td>한 단계의 결과를 다음 단계에 넘겨요. 중간에 검사 관문을 둘 수 있어요.</td><td>브랜드 조사 → 핵심 메시지 → 인스타 문구</td></tr>
+      <tr><td>② 라우팅(routing)</td><td>입력 종류를 먼저 나눈 다음, 각각에 맞는 담당에게 보내요.</td><td>고객 문의를 상품·배송·불만 창구로 나누기</td></tr>
+      <tr><td>③ 병렬화(parallelization)</td><td>서로 상관없는 일을 동시에 돌리고 결과를 합쳐요.</td><td>동성로·서문시장·앞산을 동시에 조사</td></tr>
+      <tr><td>④ 오케스트레이터-워커(orchestrator-workers)</td><td>반장 역할 AI가 일을 쪼개서 나눠 주고 결과를 모아요. 몇 개로 나눌지도 반장이 정해요.</td><td>신상품 기획을 경쟁사·타깃 고객·가격대로 나눠 맡기기</td></tr>
+      <tr><td>⑤ 평가자-최적화(evaluator-optimizer)</td><td>한쪽이 만들고 다른 쪽이 기준에 맞춰 평가해요. 통과할 때까지 반복해요.</td><td>글쓴이와 편집자가 상세페이지 문구 주고받기</td></tr>
+    </tbody>
+  </table></div>
+  <p>자주 쓰는 ⑤ 평가자-최적화를 그림으로 볼게요. ① 체이닝은 바로 아래 예시로, 나머지는 "패턴 그림 더 보기"에서 볼 수 있어요.</p>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  W["작성 AI<br/>상세페이지 문구"] --> E{"평가 AI<br/>톤·길이·금지어 체크"}
+  E -->|"고칠 점 피드백"| W
+  E -->|"통과"| F["최종본"]
+  </pre><figcaption>⑤ 평가자-최적화: 글쓴이와 편집자가 주고받기</figcaption></figure>
+  <details class="deep"><summary>패턴 그림 더 보기</summary>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  A["브랜드 조사"] --> B["핵심 메시지 3개"] --> G{"검사 통과?"}
+  G -->|"통과"| C["인스타 문구 작성"]
+  G -->|"다시"| B
+  </pre><figcaption>① 체이닝: 한 줄로 이어 달리다가, 검사에서 떨어지면 앞 단계로 돌아가요.</figcaption></figure>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  I["고객 문의"] --> R{"분류"}
+  R -->|"상품 질문"| P["상품 담당"]
+  R -->|"배송 문의"| D["배송 담당"]
+  R -->|"불만"| H["사람 상담원"]
+  </pre><figcaption>② 라우팅: 안내 데스크가 창구를 정해 줘요.</figcaption></figure>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  S["관광 콘텐츠 기획"] --> A["동성로 조사"]
+  S --> B["서문시장 조사"]
+  S --> C["앞산 조사"]
+  A --> M["결과 합치기"]
+  B --> M
+  C --> M
+  </pre><figcaption>③ 병렬화: 셋이 동시에 나가서 조사해요.</figcaption></figure>
+  <figure class="diagram"><pre class="mermaid">
+flowchart TD
+  O["반장 AI<br/>일 쪼개기·나눠 주기"] --> W1["워커: 경쟁사 분석"]
+  O --> W2["워커: 타깃 고객"]
+  O --> W3["워커: 가격대 조사"]
+  W1 --> O2["반장 AI가 종합"]
+  W2 --> O2
+  W3 --> O2
+  </pre><figcaption>④ 오케스트레이터-워커: 병렬화와 비슷하지만, 나누는 방법을 AI가 그때그때 정해요.</figcaption></figure>
+  </details>
+  <div class="callout tip">💡 처음부터 복잡하게 짤 필요 없어요. Anthropic도 "가장 단순한 방법부터 시작하고, 필요할 때만 복잡하게"를 권해요.</div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 올리브영 신상품 인스타 문구를 만들어요. 한 번에 다 시키지 않고 ① 체이닝처럼 단계를 나눠요.</p><pre>1단계: 이 상품 설명을 읽고 핵심 메시지 3개만 뽑아 줘.
+(메시지를 확인한 뒤)
+2단계: 방금 뽑은 메시지 3개로 인스타 문구 2개를 써 줘. 각각 100자 이내로.</pre><p>결과: 1단계 메시지가 엉뚱하면 거기서 바로 고칠 수 있어요. 내가 확인하는 그 순간이 체이닝의 "검사 관문"이에요.</p></div>
+
+  <!-- 6 -->
+  <h3 id="agents-graph">에이전트 그래프: 누가 누구에게 무엇을 넘기나</h3>
+  <p>여러 단계와 에이전트가 얽히면 머릿속으로 따라가기 어려워요. 그래서 그림으로 그려요. <strong>노드(node)</strong>는 한 단계나 한 에이전트, <strong>엣지(edge)</strong>는 결과를 넘기는 화살표예요.</p>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  A["로컬 브랜드<br/>리서치"] -->|"조사 노트"| B["기획<br/>컨셉·타깃"]
+  B -->|"기획안"| C["콘텐츠 제작<br/>문구·이미지"]
+  C -->|"초안"| D{"검토"}
+  D -->|"근거 부족"| A
+  D -->|"톤 수정"| C
+  D -->|"통과"| E["발행 준비"]
+  </pre><figcaption>되돌아가는 화살표(루프)가 있다는 게 일반 순서도와 다른 점이에요.</figcaption></figure>
+  <p>수업 후반에 쓰는 <strong>n8n</strong>은 이 그림처럼 노드를 선으로 잇는 방식이에요.</p>
+  <details class="deep"><summary>예시: 작업 흐름을 그래프로 그려 보기</summary>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 팀 프로젝트로 대구 관광 릴스를 만들기 전에, 작업 흐름부터 그래프로 그려 봐요.</p><pre>대구 관광 릴스 제작 흐름을 단계(노드)와 화살표로 정리해서
+Mermaid 그림으로 보여 줘.
+검토에서 떨어지면 어느 단계로 돌아가는지도 표시해 줘.</pre><p>결과: Mermaid(글로 순서도를 그리는 문법) 코드가 나와요. "HTML 파일로 저장해서 그림으로 보여 줘"라고 덧붙이면 브라우저에서 위 그림처럼 볼 수 있어요. 노드 하나하나가 나중에 n8n에서 만들 단계 목록이 돼요.</p></div>
+  </details>
+
+  <!-- 7 -->
+  <h3 id="agents-subagents">서브에이전트와 병렬 작업</h3>
+  <p>서브에이전트(subagent)는 메인 Claude가 부르는 보조 일꾼이에요. 핵심은 <strong>각자 자기 컨텍스트 창</strong>을 따로 쓴다는 점이에요. 서브에이전트가 웹페이지 열 개를 읽어도, 메인 대화에는 요약만 돌아와요.</p>
+  <div class="analogy"><strong>비유</strong> 팀장이 인턴 세 명에게 조사를 맡기면, 인턴들은 각자 책상에서 자료를 잔뜩 펼쳐요. 팀장 책상에는 한 장짜리 보고서만 올라와요. 팀장 책상(메인 컨텍스트)이 깨끗하게 유지돼요.</div>
+  <figure class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant 나
+  participant 메인 as 메인 Claude
+  participant S1 as 서브에이전트 1
+  participant S2 as 서브에이전트 2
+  나->>메인: 대구 카페 브랜드 2곳 따로 조사해 줘
+  par 동시에
+    메인->>S1: A브랜드 조사
+    메인->>S2: B브랜드 조사
+  end
+  S1-->>메인: A 요약 보고
+  S2-->>메인: B 요약 보고
+  메인->>나: 두 결과를 비교해서 정리
+  </pre><figcaption>긴 조사 과정은 각 서브에이전트 창에 남고, 메인에는 요약만 와요.</figcaption></figure>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 관광지 세 곳을 한 번에 조사시키고 싶어요.</p><pre>서브에이전트를 따로 써서 동성로, 서문시장, 앞산의
+관광 포인트를 동시에 조사해 줘. 각자 핵심 5줄만 보고하게 하고,
+마지막에 하나의 표로 합쳐 줘.</pre><p>결과: 서브에이전트 없이 시키면 읽은 웹페이지 내용이 전부 메인 대화에 쌓여요. 서브에이전트를 쓰면 메인 대화에는 보고만 와요.</p><p>예시 답변(실제와 다를 수 있어요)</p><pre>동성로: 쇼핑·카페 거리, 저녁 버스킹 …
+서문시장: 야시장 먹거리 …
+앞산: 전망대, 케이블카 …</pre><p>메인 책상이 가벼우니, 이어서 "표로 합쳐 줘"를 해도 앞에서 한 지시를 덜 놓쳐요.</p></div>
+  <div class="callout warn">⚠️ 서브에이전트도 각자 요청을 보내기 때문에 사용량 한도에 함께 잡혀요. 서로 의존하지 않는 일을 나눌 때 가장 효과가 좋아요.</div>
+  <p>서브에이전트처럼 뒤에서 따로 돌아가는 작업(백그라운드 작업)은 <code>/tasks</code>로 볼 수 있어요. 끝난 서브에이전트도 여기 남아요. 직접 서브에이전트를 만들고 싶으면 Claude에게 만들어 달라고 하거나 <code>.claude/agents/</code> 폴더에 파일을 두면 돼요.</p>
+
+  <!-- 8 -->
+  <h3 id="agents-ralph">Ralph 루프: 될 때까지 다시 돌리기</h3>
+  <p><strong>Ralph 루프</strong>(Ralph Wiggum 기법)는 개발자 Geoffrey Huntley가 2025년에 알린 방법이에요(만화 심슨 가족의 엉뚱하지만 끈질긴 캐릭터 이름에서 따왔어요). 같은 작업 지시를 에이전트에게 몇 번이고 다시 줘요. 매 라운드마다 에이전트는 현재 파일과 결과를 새로 읽고, 완료 기준을 통과할 때까지 이어서 일해요.</p>
+  <figure class="diagram"><pre class="mermaid">
+flowchart TD
+  P["같은 작업 지시"] --> R["한 라운드 작업"]
+  R --> C{"완료 기준 통과?"}
+  C -->|"통과"| D["끝"]
+  C -->|"아직"| M{"최대 라운드<br/>도달?"}
+  M -->|"아니요"| R
+  M -->|"네"| H["멈추고 사람이 확인"]
+  </pre><figcaption>완료 기준과 최대 라운드, 둘 다 있어야 안전하게 멈춰요.</figcaption></figure>
+  <p>이 방법에서 가장 중요한 건 <strong>완료 기준</strong>이에요. "좋아질 때까지"는 끝이 없어요. "체크리스트 10개 모두 체크", "모든 상품에 가격과 출처 링크가 있음"처럼 눈으로 확인할 수 있어야 루프가 멈춰요.</p>
+  <div class="prompt bad"><span class="label">😕 이렇게 말고</span><pre>상세페이지 문구 좋아질 때까지 계속 고쳐 줘.</pre></div>
+  <p>한 번의 요청 안에서도 같은 원리를 쓸 수 있어요.</p>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>상세페이지 문구를 고쳐 줘. 아래 4개를 모두 만족하면 끝이야.
+1) 200자 이내  2) 성분 이름 2개 이상  3) 과장 표현(최고, 1위) 없음
+4) 마지막 문장은 구매 유도. 최대 3번까지만 고치고, 그래도 안 되면 멈추고 알려 줘.</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: summary.md의 상품 정보가 군데군데 비어 있어요.</p><pre>/goal summary.md의 모든 상품에 가격과 출처 링크가 있음</pre><p>결과: Claude가 빈 칸을 채우고 다시 확인하는 일을 조건이 맞을 때까지 여러 턴 이어 가요. 중간에 멈추고 싶으면 <code>/goal clear</code>를 입력하세요.</p></div>
+  <div class="callout note">📌 같은 프롬프트를 일정 간격으로 반복하고 싶으면 <code>/loop</code>를 써요. 세션이 열려 있는 동안만 돌아요.</div>
+
+  <!-- 9 -->
+  <h3 id="agents-interview">인터뷰 스킬: AI가 질문하고 내가 답하기</h3>
+  <p>아이디어가 흐릿할 때 바로 "만들어 줘"라고 하면, AI가 빈칸을 제멋대로 채워요. 그래서 거꾸로 해요. AI가 <strong>한 번에 질문 하나씩</strong> 던지고, 내가 답하고, 다 모이면 <code>spec.md</code>(기획서)로 정리해요. 이런 흐름을 스킬로 만들어 둔 걸 인터뷰 스킬이라고 해요. grill-me처럼 사람들이 만들어 공유하는 스킬이 있어요. Claude Code에 기본으로 들어 있는 건 아니라서, 없으면 아래 프롬프트를 쓰면 돼요.</p>
+  <figure class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant 나
+  participant AI as Claude
+  나->>AI: 대구 로컬 굿즈 쇼핑몰 만들고 싶어
+  AI->>나: 질문 1. 주 고객은 누구예요? 추천은 20대 관광객
+  나->>AI: 20대 관광객 맞아요
+  AI->>나: 질문 2. 첫 버전에 결제가 꼭 필요해요? 추천은 문의 폼부터
+  나->>AI: 문의 폼으로 시작할게요
+  AI->>나: 질문 3 ... 이렇게 하나씩 계속
+  AI->>나: spec.md 초안 완성. 확인해 주세요
+  </pre><figcaption>예시 대화예요. 질문마다 추천 답을 같이 주면 대답이 훨씬 쉬워져요.</figcaption></figure>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>지금부터 나를 인터뷰해서 기획서를 같이 만들자.
+규칙:
+- 질문은 한 번에 하나만 해 줘.
+- 질문마다 네가 추천하는 답과 이유를 한 줄로 붙여 줘.
+- 목표, 대상 고객, 꼭 필요한 기능, 안 할 것, 완료 기준 순서로 물어봐 줘.
+- 내가 "정리해"라고 하면 지금까지 답을 spec.md 파일로 저장해 줘.
+주제: (여기에 아이디어 한 줄)</pre></div>
+  <p>결과: Claude가 "목표가 뭐예요? 추천: 관광객 대상 굿즈 판매"처럼 하나씩 물어봐요. "정리해"라고 하면 학습 폴더에 <code>spec.md</code>가 생기고, 목표·대상·기능·안 할 것·완료 기준이 칸별로 정리돼 있어요.</p>
+
+  <!-- 10 -->
+  <h3 id="agents-plan">계획 → 실행 → 검증, 그리고 사람이 끼어드는 지점</h3>
+  <p>큰 작업일수록 바로 실행하지 말고 계획부터 받아 보세요. <strong>플랜 모드(Plan mode)</strong>에서는 Claude가 파일을 읽고 조사해서 계획을 쓰지만, 내 파일은 고치지 않아요. 내가 승인해야 실행으로 넘어가요.</p>
+  <ol class="steps">
+    <li><strong>플랜 모드 켜기</strong>: Desktop 앱은 보내기 버튼 옆 모드 선택기에서 <strong>Plan</strong>을 골라요. 프롬프트 앞에 <code>/plan</code>을 붙여도 돼요.</li>
+    <li>Claude가 계획을 보여 주면 읽어 봐요. 마음에 안 들면 승인하지 말고 고칠 점을 말해요.</li>
+    <li>괜찮으면 승인해요. 플랜 모드가 풀리고 실행이 시작돼요.</li>
+    <li>끝나면 처음에 정한 완료 기준으로 확인해 달라고 해요.</li>
+  </ol>
+  <details class="deep"><summary>터미널에서는</summary>
+  <p><kbd>Shift</kbd>+<kbd>Tab</kbd>을 눌러 아래 상태 표시줄에 <code>plan mode on</code>이 보일 때까지 바꿔요. 계획이 마음에 안 들면 "No, keep planning"을 고르고 고칠 점을 말하면 돼요.</p>
+  </details>
+  <figure class="diagram"><pre class="mermaid">
+flowchart LR
+  P["계획<br/>플랜 모드"] --> A{"내가 승인?"}
+  A -->|"다시"| P
+  A -->|"승인"| E["실행"]
+  E --> V["검증<br/>완료 기준 확인"]
+  V -->|"실패"| E
+  V -->|"통과"| D["완료"]
+  </pre><figcaption>계획 단계에서 방향을 잡으면 실행 단계의 헛수고가 크게 줄어요.</figcaption></figure>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 팀 피치덱 HTML 슬라이드 10장을 브랜드 컬러에 맞게 한꺼번에 고치려고 해요.</p><pre>/plan 피치덱 슬라이드 10장을 대구 로컬 브랜드 컬러에 맞게 바꾸고 싶어.
+어떤 파일을 어떤 순서로 고칠지 계획부터 보여 줘.</pre><p>결과: 고칠 파일 목록과 순서가 계획으로 나와요. 이때는 파일이 하나도 바뀌지 않아요. "표지는 빼 줘"처럼 고칠 점을 말하고, 승인하면 그때 실행돼요.</p></div>
+  <p>에이전트가 아무리 똑똑해도, 되돌리기 어려운 일은 사람이 직접 확인해야 해요. 아래 네 가지는 꼭 멈춰서 보세요.</p>
+  <div class="cards">
+    <div class="card"><h4>🔐 권한 승인</h4><p>Claude가 명령 실행이나 파일 수정을 물어보면 내용을 읽고 눌러요. 무작정 "예" 연타는 금물이에요.</p></div>
+    <div class="card"><h4>🚀 배포</h4><p>Vercel 등에 올리기 전에 화면을 직접 열어 보고 승인해요. 배포되면 남들이 봐요.</p></div>
+    <div class="card"><h4>💳 결제</h4><p>유료 API, 구독, 광고비처럼 돈이 나가는 일은 반드시 내가 결정해요.</p></div>
+    <div class="card"><h4>🗑️ 삭제</h4><p>파일·데이터 삭제는 되돌리기 어려워요. 무엇이 지워지는지 목록을 먼저 받아 봐요.</p></div>
+  </div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 프로젝트 폴더에 쌓인 안 쓰는 이미지를 정리하고 싶어요.</p><pre>assets 폴더에서 안 쓰는 이미지를 지우고 싶어.
+지우기 전에 삭제할 파일 목록부터 보여 주고,
+내가 "지워"라고 하면 그때 지워 줘.</pre><p>결과: 목록을 먼저 받아서, 피치덱에 쓰는 로고 파일이 섞여 있지 않은지 직접 확인하고 나서 지울 수 있어요.</p></div>
+  <div class="callout warn">⚠️ 터미널에서는 입력창이 빈 상태로 <kbd>Esc</kbd>를 두 번 누르거나 <code>/rewind</code>를 치면 Claude가 고친 파일을 이전 상태로 되돌릴 수 있어요. 하지만 명령어(<code>rm</code> 등)로 지운 파일, 이미 끝난 배포, 외부 서비스 작업은 되돌리지 못해요. 그래서 위 네 지점은 실행 전에 확인해야 해요.</div>
+  <p><a class="ref" href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">공식 문서: 권한 모드와 플랜 모드 ↗</a> <a class="ref" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">공식 문서: 서브에이전트 ↗</a> <a class="ref" href="https://cc101.axwith.com/ko" target="_blank" rel="noopener">CC101 ↗</a></p>
+</section>

@@ -1,0 +1,149 @@
+<section id="landscape" class="chapter" data-title="AI 도구 지형도" data-emoji="🗺️">
+  <h2>AI 도구 지형도: 뭐가 뭔지 정리하기</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>LLM은 엄청난 양의 글을 읽고 "다음에 올 말"을 맞히도록 훈련된 모델이에요.</li>
+    <li>Opus·Sonnet·Haiku는 <em>모델</em>(엔진)이고, Claude 채팅·Claude Code·Cowork는 그 모델을 쓰는 <em>앱</em>(자동차)이에요.</li>
+    <li>대화로 답을 받고 싶으면 채팅, 내 폴더의 파일을 직접 만들고 고치게 하려면 Claude Code나 Cowork를 써요.</li>
+  </ul></div>
+
+  <h3 id="landscape-llm">LLM이 뭐예요?</h3>
+  <p>LLM(Large Language Model, 대규모 언어 모델)은 인터넷 글, 책, 코드 같은 텍스트를 아주 많이 읽고 학습한 프로그램이에요. 하는 일은 의외로 단순해요. 지금까지 나온 글을 보고 <strong>다음에 올 말을 예측</strong>하는 거예요.</p>
+  <p>이 예측을 한 조각(토큰)씩 계속 이어 붙이면 문장이 되고, 문단이 되고, 기획서가 돼요. 그래서 질문에 답하고, 글을 요약하고, 코드도 쓸 수 있어요.</p>
+  <div class="analogy"><strong>비유</strong> 휴대폰 키보드의 자동완성을 떠올려 보세요. "오늘 저녁" 다음에 "뭐 먹지"를 추천해 주죠. LLM은 그 자동완성이 책 수백만 권을 읽고 엄청 똑똑해진 버전이라고 생각하면 돼요.</div>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  A["입력<br/>대구 근대골목 투어는"] --&gt; B["LLM<br/>다음 말 예측"]
+  B --&gt; C["후보 1<br/>골목"]
+  B --&gt; D["후보 2<br/>약"]
+  B --&gt; E["후보 3<br/>무료"]
+  C --&gt; F["그럴듯한 말 하나를 골라<br/>붙이고 다시 예측"]
+  F --&gt; B
+    </pre>
+    <figcaption>LLM은 "다음 말 고르기"를 아주 빠르게 반복해서 긴 글을 만들어요. 실제로는 단어보다 작은 조각(토큰) 단위로 골라요.</figcaption>
+  </figure>
+  <div class="callout warn">⚠️ LLM은 "그럴듯한 말"을 만드는 데 강해요. 그래서 틀린 내용도 자신 있게 말할 때가 있어요(환각, hallucination). 숫자·날짜·출처는 꼭 직접 확인하세요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 지역 관광 콘텐츠를 준비하면서 Claude 채팅에 문장 앞부분만 넣어 봐요.</p>
+    <pre>대구 근대골목 투어는</pre>
+    <p>결과(예시 답변, 실제 문장은 매번 달라요): 질문이 아닌데도 "골목길을 따라 100년 전 대구의 모습을 만나는 도보 코스예요…"처럼 뒷말을 자연스럽게 이어 써요. 이게 "다음 말 예측"이에요. 거기 나온 소요 시간이나 운영 요일은 그럴듯해도 공식 안내에서 꼭 다시 확인하세요.</p>
+  </div>
+
+  <h3 id="landscape-model-app">모델 vs 앱</h3>
+  <p>헷갈리기 쉬운 부분이에요. <strong>모델</strong>은 실제로 생각하고 글을 만드는 두뇌이고, <strong>앱</strong>은 그 두뇌를 우리가 쓸 수 있게 감싼 프로그램이에요.</p>
+  <div class="analogy"><strong>비유</strong> 모델은 자동차 엔진, 앱은 자동차예요. 같은 엔진을 승용차에도 트럭에도 넣을 수 있죠. Claude 모델 하나를 채팅 앱에도, Claude Code에도 넣어서 쓰는 거예요.</div>
+  <div class="cards">
+    <div class="card"><h4>Opus</h4><p>세 가지 중 가장 똑똑한 쪽이에요. 어렵고 긴 작업에 써요. 대신 느리고 사용량을 많이 써요.</p></div>
+    <div class="card"><h4>Sonnet</h4><p>성능과 속도의 균형이 좋아요. 일상 작업은 대부분 이걸로 충분해요.</p></div>
+    <div class="card"><h4>Haiku</h4><p>가장 빠르고 가벼워요. 간단한 분류나 요약처럼 빨리 끝낼 일에 맞아요.</p></div>
+  </div>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  subgraph M["모델 = 엔진"]
+    O["Opus"]
+    S["Sonnet"]
+    H["Haiku"]
+  end
+  subgraph P["앱 = 자동차"]
+    C1["Claude.ai 채팅"]
+    C2["Claude Code"]
+    C3["Cowork"]
+    C4["Claude in Chrome"]
+  end
+  M --&gt; P
+    </pre>
+    <figcaption>여러 앱이 같은 Claude 모델을 가져다 써요.</figcaption>
+  </figure>
+  <div class="callout note">📌 모델 이름 뒤 숫자(버전)는 계속 바뀌어요. Claude Code 안에서는 <code>/model</code>로 지금 쓰는 모델을 확인하고 바꿀 수 있어요. 목록에 이 셋 말고 다른 이름(예: Fable)이 보이면 그것도 모델, 즉 엔진이에요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 피치덱 전체 구조를 잡는 어려운 작업이라 더 똑똑한 모델로 바꾸고 싶어요. 터미널에서 연 Claude Code 입력창에 이렇게 쳐요.</p>
+    <pre>/model</pre>
+    <p>결과: 쓸 수 있는 모델 목록이 떠요. 앱(Claude Code)은 그대로고 엔진만 갈아 끼운 거예요. 리뷰 분류처럼 단순한 일로 돌아오면 다시 가벼운 모델로 바꾸면 돼요. 여기서 고른 모델은 다음 세션 기본값으로도 저장돼요. 이번 세션만 바꾸고 싶으면 목록에서 해당 줄에 <code>s</code>를 누르세요. 데스크톱 앱 Code 탭에서는 <code>/model</code> 대신 전송 버튼 옆 모델 드롭다운에서 고르면 돼요. 세션 중간에도 바꿀 수 있어요.</p>
+  </div>
+
+  <h3 id="landscape-compare">Claude 채팅 vs Claude Code vs Cowork vs Claude in Chrome</h3>
+  <p>모두 같은 Claude지만, 일하는 장소와 손이 닿는 범위가 달라요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>앱</th><th>어디서 써요?</th><th>잘하는 일</th><th>이럴 때 써요</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Claude.ai 채팅</strong></td><td>웹 브라우저, 모바일 앱</td><td>대화로 묻고 답하기, 글쓰기, 아이디어 정리</td><td>"올리브영 신상 립밤 기획 아이디어 10개 줘"처럼 답만 받으면 될 때</td></tr>
+      <tr><td><strong>Claude Code</strong></td><td>터미널, 데스크톱 앱 Code 탭, 웹(claude.ai/code), VS Code·JetBrains</td><td>폴더 안 파일을 읽고 만들고 고치기, 명령 실행, 여러 단계 작업</td><td>리서치 노트 폴더 정리, 웹페이지 만들기, 배포까지 직접 시키고 싶을 때</td></tr>
+      <tr><td><strong>Cowork</strong></td><td>Claude 데스크톱 앱 (macOS·Windows)</td><td>Claude Code와 같은 방식의 에이전트를 코딩 없이 쓰기. 폴더를 주면 파일을 읽고 만들고 고쳐요</td><td>다운로드 폴더 정리, 스크린샷으로 스프레드시트 만들기, 메모로 보고서 만들기</td></tr>
+      <tr><td><strong>Claude in Chrome</strong></td><td>크롬 브라우저 확장 프로그램</td><td>크롬 탭의 내용을 읽고 클릭·입력 같은 동작하기</td><td>로그인된 사이트에서 정보 모으기, 반복 입력 자동화. Claude Code와 연결해서도 써요</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout tip">💡 Cowork는 유료 요금제(Pro·Max·Team·Enterprise)에서 쓸 수 있어요. "코딩 없는 Claude Code"라고 생각하면 이해가 쉬워요.</div>
+  <div class="callout note">📌 Claude in Chrome은 내 브라우저의 로그인 상태를 그대로 써요. 로그인 화면이나 CAPTCHA가 나오면 멈추고 나에게 직접 처리해 달라고 해요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 올리브영 립밤 리뷰 30개를 모아 둔 <code>reviews.csv</code>를 요약하고 싶어요. 같은 일을 채팅과 Claude Code에 각각 시켜 봐요.</p>
+    <pre>채팅: (리뷰 30개를 복사해 붙여 넣고) 장단점 요약해 줘
+Claude Code: reviews.csv 읽고 장단점을 요약해서 summary.md로 저장해 줘</pre>
+    <p>결과: 채팅은 답이 대화창에만 남아서 다시 복사해야 해요. Claude Code는 파일을 직접 열어 읽고, 폴더에 <code>summary.md</code>를 새로 만들어 둬요.</p>
+  </div>
+
+  <h3 id="landscape-surfaces">Claude Code는 어디서 열어요?</h3>
+  <p>Claude Code는 한 가지 프로그램이지만 여는 창구가 여러 개예요. 어느 창구로 열든 하는 일은 같아요.</p>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart TD
+  CC["Claude Code"] --&gt; T["터미널<br/>글자로 명령하는 기본 창구"]
+  CC --&gt; D["데스크톱 앱 Code 탭<br/>화면으로 변경 확인"]
+  CC --&gt; W["웹 claude.ai/code<br/>설치 없이 클라우드에서"]
+  CC --&gt; I["VS Code · JetBrains<br/>코드 편집기 안에서"]
+    </pre>
+    <figcaption>부트캠프 둘째 날에는 데스크톱 앱의 Code 탭이나 claude.ai/code로 시작해요.</figcaption>
+  </figure>
+  <div class="callout note">📌 웹(claude.ai/code)은 내 컴퓨터가 아니라 Anthropic 클라우드에서 돌아가요. 그래서 내 컴퓨터 폴더가 아니라 GitHub 저장소를 가져와서 작업해요. 창을 닫아도 작업은 계속돼요. 수업에서 만든 <code>bootcamp</code> 폴더로 작업하려면 데스크톱 앱 Code 탭이나 터미널을 쓰세요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 둘째 날, 데스크톱 앱 Code 탭에서 <code>bootcamp</code> 폴더를 골라 세션을 열었어요. 첫 마디로 이렇게 쳐 봐요.</p>
+    <pre>이 폴더에 어떤 파일이 있는지 한 줄씩 설명해 줘</pre>
+    <p>결과(예시 답변): Claude가 폴더를 훑어보고 "week1/notes.md는 수업 메모예요"처럼 파일마다 한 줄씩 알려 줘요. 터미널에서 <code>claude</code>로 열어도 같은 말을 치면 같은 일을 해요.</p>
+  </div>
+
+  <h3 id="landscape-others">다른 AI 도구도 한 줄씩</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>도구</th><th>한 줄 설명</th></tr></thead>
+    <tbody>
+      <tr><td><strong>ChatGPT</strong></td><td>OpenAI의 채팅 앱이에요. Claude.ai 채팅과 같은 자리에 있는 도구예요.</td></tr>
+      <tr><td><strong>OpenAI Codex</strong></td><td>OpenAI의 코딩 에이전트로, Claude Code와 가장 비슷한 경쟁 도구예요. 터미널용 Codex CLI, 데스크톱 앱, 웹(chatgpt.com/codex)이 있고 지시 파일로 <code>AGENTS.md</code>를 써요.</td></tr>
+      <tr><td><strong>Gemini · Gemini CLI</strong></td><td>Gemini는 구글의 모델과 채팅 앱이고, Gemini CLI는 그 모델을 쓰는 터미널 에이전트예요. 지시 파일은 <code>GEMINI.md</code>예요.</td></tr>
+      <tr><td><strong>Cursor</strong></td><td>VS Code를 바탕으로 만든 AI 코드 편집기예요. 편집기 안에 에이전트가 들어 있어요.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout tip">💡 도구는 달라도 원리는 같아요. 이 페이지에서 배운 컨텍스트, 프롬프트, 지시 파일 개념은 Codex나 Gemini CLI에도 거의 그대로 통해요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 팀원 중 한 명은 Claude Code를, 다른 한 명은 Codex를 써요. 둘 다 같은 규칙으로 일하게 하고 싶어요.</p>
+    <pre>## 우리 팀 규칙
+- 답은 한국어 해요체로 써 줘
+- 보고서는 마크다운으로 reports 폴더에 저장해 줘</pre>
+    <p>결과: 같은 내용을 Claude Code는 <code>CLAUDE.md</code>, Codex는 <code>AGENTS.md</code>, Gemini CLI는 <code>GEMINI.md</code>에 넣으면 돼요. 파일 이름만 다르고 쓰는 법은 같아요. 팀이 같이 쓸 거라면 <code>AGENTS.md</code> 하나에 적어 두세요. <code>CLAUDE.md</code>가 없으면 Claude Code도 <code>AGENTS.md</code>를 읽어요(자세한 건 03장 CLAUDE.md). <code>CLAUDE.md</code>가 이미 있다면 그 맨 위에 <code>@AGENTS.md</code> 한 줄을 넣어 불러오면 돼요.</p>
+  </div>
+
+  <h3 id="landscape-choose">뭘 쓰지? 결정 플로우</h3>
+  <p>할 일이 생겼을 때 아래 질문을 따라가 보세요.</p>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart TD
+  Q1{"답이나 아이디어만<br/>받으면 되나요?"} --&gt;|"네"| A1["Claude.ai 채팅"]
+  Q1 --&gt;|"아니요, 직접 작업까지 시킬래요"| Q2{"웹사이트 안에서<br/>클릭·입력해야 하나요?"}
+  Q2 --&gt;|"네"| A2["Claude in Chrome"]
+  Q2 --&gt;|"아니요"| Q3{"코드나 배포까지<br/>다루나요?"}
+  Q3 --&gt;|"네"| A3["Claude Code"]
+  Q3 --&gt;|"아니요, 문서·표 정리 정도"| A4["Cowork 또는 Claude Code"]
+    </pre>
+    <figcaption>부트캠프 실습은 대부분 Claude Code로 해요. 헷갈리면 Claude Code를 고르세요.</figcaption>
+  </figure>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 팀 프로젝트로 대구 관광 랜딩페이지를 만들어서 Vercel에 올려야 해요. 플로우를 따라가 봐요.</p>
+    <pre>답이나 아이디어만 받으면 되나요? → 아니요, 직접 만들게 할래요
+웹사이트 안에서 클릭·입력해야 하나요? → 아니요
+코드나 배포까지 다루나요? → 네
+→ Claude Code</pre>
+    <p>결과: Claude Code에서 페이지를 만들고 GitHub·Vercel 배포까지 이어서 해요. 반대로 "랜딩페이지 문구 아이디어 5개"만 필요하면 첫 질문에서 채팅으로 끝나요.</p>
+  </div>
+  <details class="deep"><summary>더 알아보기</summary>
+    <p>Claude Code가 무엇을 할 수 있는지, 어떤 창구가 있는지는 공식 문서 첫 페이지에 잘 정리돼 있어요. 크롬 연결 방법은 Chrome 문서를 보세요.</p>
+    <p><a class="ref" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">공식 문서: Claude Code 개요 ↗</a> <a class="ref" href="https://code.claude.com/docs/en/chrome" target="_blank" rel="noopener">공식 문서: Chrome 연결 ↗</a> <a class="ref" href="https://cc101.axwith.com/ko" target="_blank" rel="noopener">CC101 ↗</a></p>
+  </details>
+</section>

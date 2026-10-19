@@ -1,0 +1,213 @@
+<section id="basics" class="chapter" data-title="기초 개념" data-emoji="🧱">
+  <h2>기초 개념: 터미널부터 컨텍스트, API까지</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>Claude Code는 "지금 열린 폴더" 안에서 일해요. 폴더·경로·터미널을 알면 덜 헤매요.</li>
+    <li>컨텍스트(context)는 AI가 지금 이 순간 볼 수 있는 모든 것이고, 책상처럼 크기가 정해져 있어요.</li>
+    <li>API는 프로그램끼리 주문을 주고받는 창구예요. API 키는 비밀번호라서 절대 공유하면 안 돼요.</li>
+  </ul></div>
+
+  <h3 id="basics-terminal">파일, 폴더, 경로, 터미널</h3>
+  <p>컴퓨터 속 자료는 <strong>파일</strong>이고, 파일을 묶어 두는 상자가 <strong>폴더</strong>예요. 폴더 안에 폴더를 또 넣을 수 있어서 나무처럼 가지를 쳐요.</p>
+  <p><strong>경로(path)</strong>는 파일이 어디 있는지 적은 주소예요. 맥에서는 <code>/Users/me/bootcamp/week1/notes.md</code>처럼 슬래시(/)로, 윈도우에서는 <code>C:\Users\me\bootcamp</code>처럼 역슬래시(\)로 구분해요.</p>
+  <div class="analogy"><strong>비유</strong> 경로는 택배 주소예요. "대구시 → 중구 → 동성로 → 3층 → 302호"처럼 큰 곳에서 작은 곳으로 좁혀 가죠. <code>/Users/me/bootcamp/notes.md</code>도 똑같이 바깥 폴더에서 안쪽 파일로 좁혀 가는 주소예요.</div>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart TD
+  R["내 홈 폴더<br/>/Users/me"] --&gt; B["bootcamp<br/>부트캠프 폴더"]
+  B --&gt; W1["week1"]
+  B --&gt; W2["week2"]
+  W1 --&gt; N1["notes.md"]
+  W1 --&gt; N2["daegu-brand.md"]
+  W2 --&gt; N3["oliveyoung-plan.md"]
+    </pre>
+    <figcaption>daegu-brand.md의 경로는 /Users/me/bootcamp/week1/daegu-brand.md 예요.</figcaption>
+  </figure>
+  <p><strong>터미널(terminal)</strong>은 마우스 대신 글자로 컴퓨터에 명령하는 창이에요. 맥은 "터미널" 앱, 윈도우는 "PowerShell"을 열면 돼요. 처음엔 아래 네 개만 알아도 충분해요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>명령</th><th>뜻</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td><code>pwd</code></td><td>지금 내가 있는 폴더 경로 보기</td><td><code>pwd</code></td></tr>
+      <tr><td><code>ls</code></td><td>지금 폴더 안에 뭐가 있는지 보기</td><td><code>ls</code></td></tr>
+      <tr><td><code>cd</code></td><td>다른 폴더로 들어가기 (<code>cd ..</code>은 한 칸 위로)</td><td><code>cd bootcamp</code></td></tr>
+      <tr><td><code>mkdir</code></td><td>새 폴더 만들기</td><td><code>mkdir bootcamp</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout tip">💡 Claude Code는 실행한 그 폴더를 작업 공간으로 삼아요. 그래서 <code>cd bootcamp</code>로 먼저 들어간 다음 <code>claude</code>를 실행하는 습관을 들이세요. 데스크톱 앱에서는 세션을 시작할 때 폴더를 고르면 돼요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 둘째 날, 맥 터미널을 처음 열었어요. 아래를 한 줄씩 치고 <kbd>Enter</kbd>를 눌러요.</p>
+    <pre>pwd
+mkdir bootcamp
+cd bootcamp
+ls
+claude</pre>
+    <p>결과: <code>pwd</code>는 <code>/Users/me</code>처럼 지금 위치를 보여 주고, <code>mkdir</code>로 bootcamp 폴더를 만든 뒤 <code>cd</code>로 들어가요. 갓 만든 폴더라 <code>ls</code>를 쳐도 아직 아무것도 안 나와요. 마지막 <code>claude</code>를 치면 bootcamp 폴더를 작업 공간으로 Claude Code가 열려요.</p>
+    <p>처음 실행하면 Claude 계정으로 로그인하라는 안내가 떠요. 안내대로 로그인하면 돼요. (이미 bootcamp 폴더가 있다면 <code>mkdir</code> 줄은 건너뛰세요.)</p>
+  </div>
+  <div class="callout note">📌 터미널을 한 번도 안 열어 봤다면 공식 문서의 터미널 안내가 도움이 돼요. <a class="ref" href="https://code.claude.com/docs/en/terminal-guide" target="_blank" rel="noopener">공식 문서: 터미널 가이드 ↗</a></div>
+
+  <h3 id="basics-md">MD(마크다운) 파일이 뭐예요?</h3>
+  <p><code>.md</code>로 끝나는 파일은 <strong>마크다운(Markdown)</strong> 파일이에요. 그냥 메모장 글인데, <code>#</code>이나 <code>-</code> 같은 기호 몇 개로 제목과 목록을 표시해요.</p>
+  <p>AI와 일할 때 마크다운을 정말 많이 써요. Claude Code의 지시 파일 <code>CLAUDE.md</code>, 스킬 파일 <code>SKILL.md</code>, 수업에서 만들 <code>spec.md</code>가 전부 마크다운이에요.</p>
+  <div class="cards">
+    <div class="card"><h4>✍️ 이렇게 쓰면</h4><pre><code># 대구 로컬 브랜드 리서치
+
+## 후보
+- **약령시 한방차** 체험형 카페
+- 서문시장 야시장 굿즈
+
+&gt; 다음 주까지 3곳 인터뷰</code></pre></div>
+    <div class="card"><h4>👀 이렇게 보여요</h4><p><strong>대구 로컬 브랜드 리서치</strong> (큰 제목)</p><p><strong>후보</strong> (작은 제목)</p><ul><li><strong>약령시 한방차</strong> 체험형 카페</li><li>서문시장 야시장 굿즈</li></ul><p>▎다음 주까지 3곳 인터뷰 (인용)</p></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>쓰는 법</th><th>결과</th></tr></thead>
+    <tbody>
+      <tr><td><code># 제목</code>, <code>## 소제목</code></td><td>제목 (# 개수가 많을수록 작아져요)</td></tr>
+      <tr><td><code>- 항목</code></td><td>글머리 목록</td></tr>
+      <tr><td><code>**굵게**</code></td><td><strong>굵게</strong></td></tr>
+      <tr><td><code>&gt; 인용</code></td><td>인용 상자</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout tip">💡 사람도 AI도 읽기 쉬워서 마크다운을 써요. Claude에게 "마크다운으로 정리해 줘"라고 하면 바로 문서로 쓸 수 있는 형태로 나와요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 수업 끝나고 휴대폰에 대충 적은 메모를 Claude Code에 붙여 넣고 정리를 부탁해요.</p>
+    <pre>아래 메모를 마크다운으로 정리해서 week1/notes.md로 저장해 줘.
+제목은 "1주차 수업 정리", 배운 개념은 목록으로.</pre>
+    <p>결과: week1 폴더에 <code>notes.md</code>가 생기고, 열어 보면 <code># 1주차 수업 정리</code> 제목 아래 <code>- 컨텍스트</code>, <code>- 토큰</code>처럼 목록이 들어 있어요.</p>
+  </div>
+
+  <h3 id="basics-token">토큰: AI가 글을 세는 단위</h3>
+  <p>AI는 글을 글자 단위가 아니라 <strong>토큰(token)</strong>이라는 조각 단위로 읽어요. 토큰은 단어 하나일 때도 있고, 단어의 일부나 글자 몇 개일 때도 있어요.</p>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  S["올리브영 신상 기획안"] --&gt; T1["올리"]
+  S --&gt; T2["브영"]
+  S --&gt; T3["신상"]
+  S --&gt; T4["기획"]
+  S --&gt; T5["안"]
+    </pre>
+    <figcaption>이해를 돕는 예시예요. 실제로 어떻게 쪼개지는지는 모델마다 달라요.</figcaption>
+  </figure>
+  <p>토큰이 중요한 이유는 두 가지예요. AI가 한 번에 볼 수 있는 양(컨텍스트 창)과 사용량 한도가 모두 토큰으로 계산되거든요.</p>
+  <div class="callout note">📌 모델에 따라 한국어가 영어보다 토큰을 더 쓰기도 해요. 긴 자료를 넣을 때는 필요한 부분만 골라 주는 게 좋아요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 올리브영 신상 기획서 초안 몇 개와 리뷰 파일을 Claude Code로 읽힌 뒤, 토큰을 얼마나 썼는지 궁금해요.</p>
+    <pre>/context</pre>
+    <p>결과: 지금 쓰고 있는 토큰이 색깔 칸으로 채워진 그림이 나와요. 파일을 읽을수록 칸이 늘어나는 게 보여요. "글을 많이 넣을수록 토큰이 쌓인다"가 눈으로 확인돼요.</p>
+  </div>
+
+  <h3 id="basics-context">컨텍스트: AI가 지금 보고 있는 모든 것</h3>
+  <p>이 장에서 가장 중요한 개념이에요. <strong>컨텍스트(context)</strong>는 AI가 답을 만들 때 <em>지금 이 순간</em> 볼 수 있는 정보 전부예요. 여기 없는 건 AI 입장에서 존재하지 않는 거예요.</p>
+  <p>Claude Code는 새 세션을 열 때마다 빈 컨텍스트로 시작해요. 어제 나눈 대화를 기억하는 것처럼 보인다면, CLAUDE.md나 자동 메모리 같은 파일을 매번 다시 읽어 오기 때문이에요.</p>
+  <div class="analogy"><strong>비유</strong> 컨텍스트 창(context window)은 <strong>책상</strong>이에요. AI는 책상 위에 펼쳐 놓은 자료만 볼 수 있어요. 서랍(내 컴퓨터 폴더)에 있는 파일은 꺼내서 책상에 올려야 비로소 읽을 수 있죠. 책상 크기는 정해져 있어서, 자료를 계속 올리면 언젠가 꽉 차요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 어제 대구 로컬 브랜드 톤을 정했는데, 오늘 새 세션을 열고 물어봐요. (어제 정한 톤이 메모리에 저장되지 않은 경우)</p>
+    <pre>나: 어제 정한 브랜드 톤으로 소개 글 써 줘
+(예시 답변) Claude: 어떤 톤이었는지 알려 주시면 맞춰 쓸게요.
+(CLAUDE.md에 "브랜드 톤: 친근한 해요체, 문장마다 짧게" 추가 후 새 세션)
+나: 브랜드 소개 글 써 줘
+Claude: (처음부터 친근한 해요체로 짧게 써요)</pre>
+    <p>결과: 어제 대화는 오늘 책상에 없어서 못 보지만, CLAUDE.md는 세션마다 책상에 올라와서 매번 지켜져요.</p>
+  </div>
+
+  <p><strong>책상 위에 뭐가 올라가요?</strong></p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>올라가는 것</th><th>언제</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td>시스템 프롬프트</td><td>세션 시작할 때</td><td>Claude Code가 어떻게 일할지 정한 기본 지시 (나에게는 안 보여요)</td></tr>
+      <tr><td>CLAUDE.md</td><td>세션 시작할 때</td><td>"답은 한국어로, 보고서는 마크다운으로" 같은 내 규칙</td></tr>
+      <tr><td>자동 메모리(MEMORY.md)</td><td>세션 시작할 때</td><td>Claude가 지난 세션에서 스스로 적어 둔 메모 (<a href="#components-memory">03장 자동 메모리</a>)</td></tr>
+      <tr><td>스킬·도구 설명</td><td>세션 시작할 때</td><td>쓸 수 있는 스킬과 MCP 도구의 짧은 이름표</td></tr>
+      <tr><td>대화</td><td>말을 주고받을 때마다</td><td>내 요청, Claude의 답</td></tr>
+      <tr><td>읽은 파일</td><td>Claude가 파일을 열 때</td><td>리뷰 데이터 30개, 기획서 초안</td></tr>
+      <tr><td>도구 결과</td><td>명령·검색을 실행할 때</td><td>웹 검색 결과, 명령 실행 결과</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  subgraph START["시작할 때 깔리는 것"]
+    direction TB
+    A["시스템 프롬프트"]
+    B["CLAUDE.md"]
+    G["자동 메모리"]
+    C["스킬·도구 설명"]
+  end
+  subgraph WORK["작업할수록 쌓이는 것"]
+    direction TB
+    D["대화 기록"]
+    E["읽은 파일"]
+    F["도구 결과"]
+  end
+  START --&gt; M["Claude 모델<br/>책상 위 전부를 보고 답함"]
+  WORK --&gt; M
+    </pre>
+    <figcaption>왼쪽 묶음은 세션 시작부터 깔리고, 오른쪽 묶음은 작업할수록 쌓여요. 두 묶음을 합친 게 컨텍스트 창, 즉 책상이에요.</figcaption>
+  </figure>
+
+  <h3 id="basics-compact">책상이 꽉 차면? 자동 압축</h3>
+  <p>작업이 길어져서 책상이 거의 차면, Claude Code가 알아서 공간을 만들어요. 오래된 도구 결과부터 치우고, 그래도 부족하면 지금까지의 대화를 요약해서 줄여요. 이걸 <strong>자동 압축(auto-compact)</strong>이라고 해요.</p>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart TD
+  S1["작업 시작<br/>책상 여유 있음"] --&gt; S2["파일 읽고 검색하고 대화하며<br/>계속 쌓임"]
+  S2 --&gt; S3{"책상이 거의 찼나요?"}
+  S3 --&gt;|"아니요"| S2
+  S3 --&gt;|"네"| S4["오래된 도구 결과 정리<br/>대화를 요약"]
+  S4 --&gt; S5["공간 확보 후 작업 계속"]
+  S5 --&gt; S2
+    </pre>
+    <figcaption>요약하는 과정에서 앞쪽 대화의 세부 내용은 빠질 수 있어요.</figcaption>
+  </figure>
+  <div class="callout warn">⚠️ 대화 초반에 말로만 한 규칙("항상 존댓말로 써 줘")은 압축하면서 사라질 수 있어요. 계속 지켜야 하는 규칙은 CLAUDE.md에 적어 두세요. CLAUDE.md는 매번 다시 읽혀요.</div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>명령</th><th>언제 써요?</th></tr></thead>
+    <tbody>
+      <tr><td><code>/context</code></td><td>지금 책상에 뭐가 얼마나 올라가 있는지 확인할 때</td></tr>
+      <tr><td><code>/compact</code></td><td>직접 요약해서 공간을 만들 때. <code>/compact 결정사항만 남겨줘</code>처럼 무엇을 남길지 적을 수 있어요</td></tr>
+      <tr><td><code>/clear</code></td><td>완전히 다른 주제로 넘어갈 때. 빈 책상에서 새로 시작해요 (이전 대화는 <code>/resume</code>으로 다시 열 수 있어요)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout tip">💡 "대구 관광 콘텐츠 리서치"를 끝내고 "올리브영 기획"으로 넘어간다면 <code>/clear</code>로 책상을 비우는 게 좋아요. 앞 주제 자료가 섞이면 답이 흐려져요.</div>
+  <details class="deep"><summary>더 알아보기</summary>
+    <p>책상 크기는 모델마다 달라요. 정확한 숫자를 외울 필요는 없고, 궁금하면 <code>/context</code>로 확인하면 돼요. 압축할 때 무엇이 남고 무엇이 빠지는지는 공식 문서에 자세히 나와 있어요.</p>
+    <p><a class="ref" href="https://code.claude.com/docs/en/context-window" target="_blank" rel="noopener">공식 문서: 컨텍스트 창 ↗</a> <a class="ref" href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">공식 문서: 메모리와 CLAUDE.md ↗</a></p>
+  </details>
+
+  <h3 id="basics-api">API: 프로그램끼리 주문하는 창구</h3>
+  <p><strong>API</strong>(Application Programming Interface)는 프로그램이 다른 프로그램에게 일을 부탁하는 정해진 창구예요. 사람은 화면을 클릭하지만, 프로그램은 API로 요청을 보내고 답을 받아요.</p>
+  <div class="analogy"><strong>비유</strong> 식당을 떠올려 보세요. 손님(내 앱)은 주방에 직접 들어가지 않아요. 메뉴판(API 문서)을 보고 웨이터(API)에게 주문하면, 웨이터가 주방(AI 모델 서버)에 전달하고 완성된 음식(결과)을 가져다줘요.</div>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  U["손님<br/>내 앱 · n8n · Claude Code"] --&gt;|"주문 + 신분 확인"| W["웨이터<br/>API"]
+  W --&gt;|"주문 전달"| K["주방<br/>AI 모델 서버"]
+  K --&gt;|"요리 완성"| W
+  W --&gt;|"결과 전달"| U
+    </pre>
+    <figcaption>Claude Code도 뒤에서는 이렇게 모델에 요청해요. 다만 수업에서는 구독 계정으로 로그인해서 쓰니 API 키를 따로 만들 필요가 없어요. API 키는 n8n처럼 내가 만든 자동화를 연결할 때 써요.</figcaption>
+  </figure>
+  <p>부트캠프 후반에 n8n 자동화, Supabase 데이터베이스, 이미지·영상 생성 도구를 연결할 때 API가 계속 나와요. "이 서비스에 API로 연결한다"는 말은 "웨이터를 통해 주문한다"는 뜻이라고 기억하면 돼요.</p>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: n8n으로 매일 아침 대구 관광 뉴스 요약을 받는 자동화를 만들어요. n8n이 매일 아침 뉴스 사이트 RSS에서 대구 관광 기사 3개를 가져와요. 그다음 Claude API로 이렇게 주문해요.</p>
+    <pre>주문: (가져온 기사 3개 본문) + "각각 한 줄씩 요약해 줘" + 내 API 키
+돌아온 결과: "1. (첫 번째 뉴스 한 줄 요약) …" 같은 글자 데이터</pre>
+    <p>결과: 화면을 클릭하는 사람 없이도 n8n이 API로 주문하고, 받은 요약을 메일이나 슬랙으로 넘길 수 있어요.</p>
+  </div>
+
+  <h3 id="basics-apikey">API 키 = 비밀번호</h3>
+  <p><strong>API 키</strong>는 "이 주문은 내 계정으로 처리해 주세요"라는 증명서예요. 키를 가진 사람은 누구든 내 이름으로 주문할 수 있고, 요금도 내 계정으로 나가요.</p>
+  <div class="callout warn">⚠️ API 키는 비밀번호예요. 절대 공유하지 마세요.
+    <ul>
+      <li>단톡방, 디스코드, 스크린샷, 발표 슬라이드에 올리지 않기</li>
+      <li>GitHub에 올라가는 파일에 직접 적지 않기 (보통 <code>.env</code> 같은 따로 두는 파일에 보관하고, 그 파일은 GitHub에 올리지 않아요)</li>
+      <li>실수로 노출됐다면 바로 해당 서비스에서 키를 삭제하고 새로 발급받기</li>
+    </ul>
+  </div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 팀 프로젝트 웹페이지에 이미지 생성 API를 붙이는데, GitHub에도 올려야 해요. Claude Code에 이렇게 부탁해요.</p>
+    <pre>API 키는 .env 파일에 넣고, .gitignore에 .env를 추가해 줘.
+코드에는 키를 직접 적지 말고 .env에서 읽어 오게 해 줘.</pre>
+    <p>결과: 키는 내 컴퓨터의 <code>.env</code>에만 남고, GitHub에 올라가는 코드에는 키가 안 보여요. 키 값 자체는 대화창에 붙여 넣지 말고 <code>.env</code> 파일을 직접 열어 적는 게 더 안전해요.</p>
+  </div>
+</section>

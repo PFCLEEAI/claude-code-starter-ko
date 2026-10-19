@@ -1,0 +1,36 @@
+<section id="glossary" class="chapter" data-title="용어 사전" data-emoji="📖">
+  <h2>용어 사전: 수업에서 만나는 낯선 말 100여 개</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>수업에서 듣게 될 AI, Claude Code, 에이전트, Git, 배포 용어를 한곳에 모았어요.</li>
+    <li>한글이나 영어로 검색하면 한두 문장 뜻과 함께 자세히 다룬 장으로 가는 링크가 나와요.</li>
+    <li>모르는 단어가 나오면 일단 여기서 찾고, 더 궁금하면 링크된 장을 읽으세요.</li>
+  </ul></div>
+
+  <h3 id="glossary-how">이렇게 쓰세요</h3>
+  <p>강의 중에 "하네스", "컨텍스트 창", "PR" 같은 말이 갑자기 튀어나오면 당황스럽죠. 그 자리에서 물어보기 애매할 때 여기서 찾아보면 돼요.</p>
+  <p>뜻은 일부러 짧게 썼어요. 정확한 정의보다 "아, 그거구나" 하고 수업을 따라갈 수 있는 정도가 목표예요.</p>
+  <div class="analogy"><strong>비유</strong> 여행 가방에 넣어 다니는 작은 회화책 같은 거예요. 문법책을 펼치지 않아도 당장 필요한 말은 바로 찾을 수 있죠. 더 깊이 알고 싶으면 그때 본문(각 장)으로 넘어가면 돼요.</div>
+  <p>용어들은 대략 다섯 묶음으로 나뉘어요. 어떤 묶음인지 알면 어느 장을 읽어야 할지도 보여요.</p>
+  <figure class="diagram">
+    <pre class="mermaid">
+flowchart LR
+  G["용어 사전"] --&gt; A["AI 기본<br/>LLM, 토큰, 프롬프트"]
+  G --&gt; B["Claude Code 부품<br/>CLAUDE.md, 스킬, MCP, 훅"]
+  G --&gt; C["에이전트<br/>하네스, 서브에이전트, Ralph 루프"]
+  G --&gt; D["개발 기초<br/>터미널, 마크다운, JSON, API"]
+  G --&gt; E["Git과 배포<br/>커밋, PR, Vercel"]
+  A --&gt; A1["AI 도구 지형도·기초 개념·프롬프트"]
+  B --&gt; B1["구성요소·명령어 총정리"]
+  C --&gt; C1["에이전트 개념"]
+  D --&gt; D1["기초 개념"]
+  E --&gt; E1["Git·GitHub 기초"]
+    </pre>
+    <figcaption>용어 묶음과 자세히 다룬 장. 표에서 링크를 누르면 해당 장으로 바로 가요.</figcaption>
+  </figure>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 강의 중에 "하네스"라는 말이 나왔는데 뜻을 모르겠어요.</p><pre>아래 검색칸에 입력: 하네스</pre><p>결과: '하네스'와 '하네스 엔지니어링' 두 줄이 남아요. 뜻을 읽고 '본문 보기 →'를 누르면 에이전트 개념 장의 하네스 설명으로 가요.</p></div>
+  <div class="callout tip">💡 영어로 검색해도 돼요. "context"를 치면 컨텍스트와 컨텍스트 창이 함께 나와요.</div>
+
+  <h3 id="glossary-list">전체 용어 찾기</h3>
+  <div id="glossary-app"></div>
+  <div class="callout note">📌 Claude Code 공식 문서에도 용어집이 있어요. 영어지만 기능 이름의 정확한 뜻을 확인할 때 좋아요. <a class="ref" href="https://code.claude.com/docs/en/glossary" target="_blank" rel="noopener">공식 용어집 ↗</a></div>
+</section>

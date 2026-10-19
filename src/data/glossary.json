@@ -1,0 +1,615 @@
+[
+ {
+  "term": "LLM",
+  "en": "Large Language Model",
+  "def": "엄청난 양의 글을 읽고 '다음에 올 말'을 예측하도록 학습한 AI예요. Claude, GPT, Gemini가 모두 LLM이에요.",
+  "see": "landscape-llm"
+ },
+ {
+  "term": "모델",
+  "en": "Model",
+  "def": "실제로 생각하고 답을 만드는 AI 두뇌예요. Claude 안에도 Opus, Sonnet, Haiku처럼 성능과 속도가 다른 모델이 있어요.",
+  "see": "landscape-model-app"
+ },
+ {
+  "term": "생성형 AI",
+  "en": "Generative AI",
+  "def": "글, 이미지, 영상처럼 새 결과물을 만들어 내는 AI예요. 검색처럼 있는 걸 찾아오는 게 아니라 새로 써요."
+ },
+ {
+  "term": "멀티모달",
+  "en": "Multimodal",
+  "def": "글뿐 아니라 이미지, 음성, 영상 같은 여러 형태를 함께 이해하거나 만드는 능력이에요. 캡처 화면을 붙여 질문하는 것도 멀티모달이에요."
+ },
+ {
+  "term": "Anthropic",
+  "en": "Anthropic",
+  "def": "Claude를 만드는 AI 회사예요.",
+  "see": "landscape"
+ },
+ {
+  "term": "Claude",
+  "en": "Claude",
+  "def": "Anthropic이 만든 AI 모델이자 서비스 이름이에요. 채팅, Claude Code, Cowork 모두 Claude 모델(Opus·Sonnet·Haiku)로 움직여요.",
+  "see": "landscape-model-app"
+ },
+ {
+  "term": "Claude.ai",
+  "en": "Claude.ai",
+  "def": "웹과 앱에서 쓰는 Claude 채팅 서비스예요. 묻고 답하는 데 강하고, 내 컴퓨터 파일을 직접 고치지는 않아요.",
+  "see": "landscape-compare"
+ },
+ {
+  "term": "Claude Code",
+  "en": "Claude Code",
+  "def": "파일을 읽고 고치고 명령을 실행하면서 일을 끝까지 해내는 Claude의 에이전트 도구예요. 터미널, 데스크톱 앱 Code 탭, 웹(claude.ai/code), VS Code에서 쓸 수 있어요.",
+  "see": "landscape-surfaces"
+ },
+ {
+  "term": "Cowork",
+  "en": "Claude Cowork",
+  "def": "Claude 데스크톱 앱 안에서 Claude Code 같은 에이전트를 코드 없이 쓰게 만든 기능이에요. 폴더를 주고 일을 설명하면 파일을 읽고 만들고 정리해요.",
+  "see": "landscape-compare"
+ },
+ {
+  "term": "Claude in Chrome",
+  "en": "Claude in Chrome",
+  "def": "Claude가 크롬 탭을 읽고 클릭·입력까지 하게 해주는 확장 프로그램이에요. Claude Code와 연결해서 쓸 수도 있어요.",
+  "see": "landscape-compare"
+ },
+ {
+  "term": "Codex",
+  "en": "OpenAI Codex",
+  "def": "OpenAI의 코딩 에이전트로, Claude Code와 가장 비슷한 경쟁 도구예요. 지시 파일로 AGENTS.md를 써요.",
+  "see": "landscape-others"
+ },
+ {
+  "term": "Gemini CLI",
+  "en": "Gemini CLI",
+  "def": "구글이 만든 오픈소스 터미널 에이전트예요. 지시 파일 이름은 GEMINI.md예요.",
+  "see": "landscape-others"
+ },
+ {
+  "term": "Cursor",
+  "en": "Cursor",
+  "def": "VS Code를 바탕으로 만든 AI 코드 편집기예요. 편집기 안에 에이전트가 들어 있어요.",
+  "see": "landscape-others"
+ },
+ {
+  "term": "바이브 코딩",
+  "en": "Vibe coding",
+  "def": "코드를 한 줄씩 직접 짜는 대신, AI에게 말로 원하는 걸 설명하고 결과를 보며 다듬어 가는 방식이에요. 2025년 안드레이 카파시가 붙인 이름이에요."
+ },
+ {
+  "term": "토큰",
+  "en": "Token",
+  "def": "AI가 글을 읽고 세는 단위예요. 단어보다 잘게 쪼갠 조각이라 한국어 한 문장도 여러 토큰이 되고, 사용량과 비용도 토큰으로 계산해요.",
+  "see": "basics-token"
+ },
+ {
+  "term": "컨텍스트",
+  "en": "Context",
+  "def": "AI가 지금 답을 만들 때 볼 수 있는 모든 내용이에요. 대화, 읽은 파일, CLAUDE.md, 도구 결과가 다 여기에 들어가요.",
+  "see": "basics-context"
+ },
+ {
+  "term": "컨텍스트 창",
+  "en": "Context window",
+  "def": "한 번에 담을 수 있는 컨텍스트의 최대 크기예요. 책상 넓이처럼 정해져 있어서, 꽉 차면 정리(압축)하거나 새로 시작해야 해요.",
+  "see": "basics-context"
+ },
+ {
+  "term": "압축",
+  "en": "Compact",
+  "def": "긴 대화를 요약본으로 바꿔 컨텍스트 자리를 비우는 일이에요. /compact로 직접 하거나, 꽉 차면 자동으로 돼요.",
+  "see": "basics-context"
+ },
+ {
+  "term": "프롬프트",
+  "en": "Prompt",
+  "def": "AI에게 보내는 요청 글이에요. 무엇을, 왜, 어떤 형식으로 원하는지 담을수록 결과가 좋아져요.",
+  "see": "prompt-what"
+ },
+ {
+  "term": "시스템 프롬프트",
+  "en": "System prompt",
+  "def": "사용자가 말을 걸기 전에 앱이 AI에게 먼저 깔아 두는 기본 지시예요. AI의 역할과 지켜야 할 규칙을 정해요.",
+  "see": "basics-context"
+ },
+ {
+  "term": "제로샷",
+  "en": "Zero-shot",
+  "def": "예시 없이 지시만으로 일을 시키는 방식이에요. 간단한 요청은 이걸로 충분해요.",
+  "see": "prompt-eng-shots"
+ },
+ {
+  "term": "퓨샷",
+  "en": "Few-shot",
+  "def": "원하는 결과 예시를 몇 개 보여주고 비슷하게 만들어 달라고 하는 방식이에요. 우리 브랜드 문구 톤을 맞출 때 잘 통해요.",
+  "see": "prompt-eng-shots"
+ },
+ {
+  "term": "CoT",
+  "en": "Chain of Thought",
+  "def": "답만 바로 말하지 말고 단계별로 생각하게 하는 기법이에요. 비교, 계산, 기획 판단처럼 여러 단계가 필요한 일에 써요.",
+  "see": "prompt-eng-cot"
+ },
+ {
+  "term": "역할 프롬프트",
+  "en": "Role prompting",
+  "def": "\"너는 10년 차 뷰티 MD야\"처럼 역할을 줘서 관점과 말투를 정하는 방법이에요.",
+  "see": "prompt-eng-role"
+ },
+ {
+  "term": "프롬프트 체이닝",
+  "en": "Prompt chaining",
+  "def": "큰 일을 단계로 나누고, 앞 단계 결과를 다음 프롬프트에 넘겨 이어 가는 방식이에요. 조사 → 요약 → 카피 작성처럼요.",
+  "see": "prompt-eng-chain"
+ },
+ {
+  "term": "할루시네이션",
+  "en": "Hallucination",
+  "def": "AI가 사실이 아닌 내용을 그럴듯하게 지어내는 현상이에요. 통계, 가격, 출처, 인용은 꼭 원문으로 확인하세요.",
+  "see": "prompt-eng-hallucination"
+ },
+ {
+  "term": "이미지 생성",
+  "en": "Image generation",
+  "def": "글 설명(프롬프트)으로 그림을 만드는 AI 기능이에요. 수업에서는 Nano Banana 같은 도구로 상품 이미지나 포스터 시안을 만들어요.",
+  "see": "prompt-eng-image"
+ },
+ {
+  "term": "영상 생성",
+  "en": "Video generation",
+  "def": "글이나 이미지를 바탕으로 짧은 영상을 만드는 AI 기능이에요. Kling, Higgsfield 같은 도구가 있어요.",
+  "see": "prompt-eng-image"
+ },
+ {
+  "term": "CLAUDE.md",
+  "en": "CLAUDE.md",
+  "def": "세션을 시작할 때마다 Claude가 읽는 지시 파일이에요. 프로젝트 규칙, 말투, 폴더 구조를 적어 두면 매번 설명할 필요가 없어요. /init으로 초안을 만들 수 있어요.",
+  "see": "components-claude-md"
+ },
+ {
+  "term": "AGENTS.md",
+  "en": "AGENTS.md",
+  "def": "여러 코딩 에이전트가 함께 쓰는 지시 파일 이름이에요. Codex가 이 파일을 쓰고, Claude Code도 프로젝트 지시로 읽을 수 있어요.",
+  "see": "components-claude-md"
+ },
+ {
+  "term": "메모리",
+  "en": "Memory",
+  "def": "세션이 끝나도 남는 기억이에요. 내가 쓰는 CLAUDE.md와 Claude가 스스로 적어 두는 자동 메모리가 있어요.",
+  "see": "components-memory"
+ },
+ {
+  "term": "자동 메모리",
+  "en": "Auto memory",
+  "def": "Claude가 작업하면서 알게 된 점을 스스로 적어 두는 노트예요. /memory에서 확인하고 켜고 끌 수 있어요.",
+  "see": "components-memory"
+ },
+ {
+  "term": "스킬",
+  "en": "Skill",
+  "def": "SKILL.md 파일에 적어 둔 재사용 작업 설명서예요. /이름으로 직접 부르거나, 필요할 때 Claude가 알아서 꺼내 써요. 브랜드 톤 스킬, 슬라이드 스킬처럼요.",
+  "see": "components-skills"
+ },
+ {
+  "term": "SKILL.md",
+  "en": "SKILL.md",
+  "def": "스킬 하나의 본체 파일이에요. 맨 위에 이름과 설명을, 아래에 일하는 방법을 마크다운으로 적어요.",
+  "see": "components-skills"
+ },
+ {
+  "term": "프론트매터",
+  "en": "Frontmatter",
+  "def": "파일 맨 위 --- 줄 사이에 적는 정보 칸이에요. SKILL.md에서는 여기에 YAML로 name, description 같은 값을 넣어요.",
+  "see": "components-skills"
+ },
+ {
+  "term": "플러그인",
+  "en": "Plugin",
+  "def": "스킬, 서브에이전트, 훅, MCP 서버를 한 묶음으로 포장한 거예요. /plugin으로 한 번에 설치해요.",
+  "see": "components-plugins"
+ },
+ {
+  "term": "마켓플레이스",
+  "en": "Marketplace",
+  "def": "플러그인 목록과 받을 위치를 모아 둔 카탈로그예요. 앱스토어처럼 골라서 설치해요.",
+  "see": "components-plugins"
+ },
+ {
+  "term": "MCP",
+  "en": "Model Context Protocol",
+  "def": "Claude를 노션, 구글 드라이브 같은 외부 서비스와 연결하는 공통 규격이에요. 어떤 기기든 꽂히는 USB-C 포트 같은 거예요.",
+  "see": "components-mcp"
+ },
+ {
+  "term": "MCP 서버",
+  "en": "MCP server",
+  "def": "MCP 규격에 맞춰 특정 서비스의 기능을 Claude에게 열어 주는 프로그램이에요. 연결 상태는 /mcp에서 봐요.",
+  "see": "components-mcp"
+ },
+ {
+  "term": "훅",
+  "en": "Hook",
+  "def": "파일 수정 직후, 세션 시작 때처럼 정해진 순간에 자동으로 실행되는 명령이에요. CLAUDE.md가 '부탁'이라면 훅은 '반드시'예요.",
+  "see": "components-hooks"
+ },
+ {
+  "term": "권한 모드",
+  "en": "Permission mode",
+  "def": "Claude가 행동하기 전에 얼마나 물어볼지 정하는 모드예요. Shift+Tab으로 Manual, acceptEdits, plan 등을 오가요.",
+  "see": "components-permissions"
+ },
+ {
+  "term": "플랜 모드",
+  "en": "Plan mode",
+  "def": "파일을 고치기 전에 먼저 살펴보고 계획을 보여주는 모드예요. 계획을 승인해야 실제 작업에 들어가요.",
+  "see": "components-permissions"
+ },
+ {
+  "term": "자동 모드",
+  "en": "Auto mode",
+  "def": "백그라운드 안전 검사를 거치면서 대부분 묻지 않고 진행하는 권한 모드예요. 쓸 수 있는 요금제와 환경이 정해져 있어요.",
+  "see": "components-permissions"
+ },
+ {
+  "term": "체크포인트",
+  "en": "Checkpoint",
+  "def": "Claude가 파일을 고치기 전 상태를 저장해 둔 지점이에요. 터미널에서 입력창이 빈 상태로 Esc를 두 번 누르거나 /rewind로 돌아가요. 터미널 명령으로 바뀐 것까지 되돌리진 못해요.",
+  "see": "commands-top10"
+ },
+ {
+  "term": "서브에이전트",
+  "en": "Subagent",
+  "def": "메인 Claude가 일을 나눠 맡기는 보조 Claude예요. 자기 컨텍스트 창에서 따로 일하고 결과만 요약해 돌려줘서 메인 대화가 덜 붐벼요.",
+  "see": "agents-subagents"
+ },
+ {
+  "term": "도구",
+  "en": "Tool",
+  "def": "Claude가 파일 읽기, 수정, 명령 실행, 웹 검색처럼 실제 행동을 할 때 쓰는 기능이에요. 도구가 있어야 말만 하는 AI가 일하는 AI가 돼요.",
+  "see": "agents-harness"
+ },
+ {
+  "term": "세션",
+  "en": "Session",
+  "def": "Claude Code를 켜서 끌 때까지의 대화 한 묶음이에요. 저장되니까 claude -c나 /resume으로 이어갈 수 있어요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "슬래시 명령어",
+  "en": "Slash command",
+  "def": "입력창 맨 앞에 /를 붙여 쓰는 명령이에요. /clear, /compact처럼 Claude Code 자체를 조작해요.",
+  "see": "commands-doors"
+ },
+ {
+  "term": "CLI 플래그",
+  "en": "Flag",
+  "def": "터미널에서 claude 뒤에 붙이는 옵션이에요. claude -c처럼 켜는 방식을 바꿔요.",
+  "see": "commands-doors"
+ },
+ {
+  "term": "헤드리스",
+  "en": "Headless",
+  "def": "대화 화면 없이 claude -p \"요청\"으로 한 번 실행하고 결과만 받는 방식이에요. 스크립트나 자동화에 써요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "백그라운드 세션",
+  "en": "Background session",
+  "def": "터미널을 비워 둔 채 뒤에서 계속 일하는 세션이에요. /background로 보내고 claude agents로 지켜봐요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "추론 노력",
+  "en": "Effort",
+  "def": "모델이 얼마나 깊게 생각할지 정하는 단계예요. 높일수록 꼼꼼하지만 느리고 사용량이 늘어요. /effort로 바꿔요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "출력 스타일",
+  "en": "Output style",
+  "def": "답변의 말투와 길이를 바꾸는 설정이에요. /output-style로 목록을 보고 골라요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "루틴",
+  "en": "Routine",
+  "def": "클라우드에서 정해진 일정에 맞춰 도는 작업이에요. /schedule로 만들어요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "에이전트",
+  "en": "Agent",
+  "def": "목표를 받으면 다음 할 일을 스스로 정하고 도구를 써서 끝까지 해내는 AI예요. 묻는 말에만 답하는 챗봇과 달라요.",
+  "see": "agents-chatbot"
+ },
+ {
+  "term": "에이전트 루프",
+  "en": "Agent loop",
+  "def": "맥락 모으기 → 행동하기 → 결과 확인하기를 일이 끝날 때까지 되풀이하는 사이클이에요.",
+  "see": "agents-loop"
+ },
+ {
+  "term": "하네스",
+  "en": "Harness",
+  "def": "모델을 에이전트로 만들어 주는 주변 장치 전부예요. 루프, 도구, 컨텍스트 관리, 권한, 메모리 파일이 다 들어가고, Claude Code 자체가 하네스예요.",
+  "see": "agents-harness"
+ },
+ {
+  "term": "하네스 엔지니어링",
+  "en": "Harness engineering",
+  "def": "CLAUDE.md, 스킬, 훅, 서브에이전트를 설계해서 에이전트가 안정적으로 일하게 만드는 작업이에요.",
+  "see": "agents-harness"
+ },
+ {
+  "term": "워크플로우",
+  "en": "Workflow",
+  "def": "사람이 미리 정해 둔 순서대로 단계가 흘러가는 방식이에요. 에이전트는 다음 단계를 모델이 정한다는 점이 달라요.",
+  "see": "agents-patterns"
+ },
+ {
+  "term": "에이전트 그래프",
+  "en": "Agent graph",
+  "def": "에이전트나 단계를 점(노드)으로, 넘겨주기를 화살표로 그린 그림이에요. 누가 누구에게 뭘 넘기고 어디서 되돌아가는지 한눈에 보여요.",
+  "see": "agents-graph"
+ },
+ {
+  "term": "오케스트레이터",
+  "en": "Orchestrator",
+  "def": "큰 일을 쪼개 여러 작업자에게 나눠 주고 결과를 모아 정리하는 지휘자 역할이에요.",
+  "see": "agents-patterns"
+ },
+ {
+  "term": "병렬 처리",
+  "en": "Parallelization",
+  "def": "서로 상관없는 일을 여러 에이전트가 동시에 하는 패턴이에요. 경쟁사 세 곳 조사를 셋에게 나눠 맡기는 식이에요.",
+  "see": "agents-patterns"
+ },
+ {
+  "term": "라우팅",
+  "en": "Routing",
+  "def": "들어온 요청의 종류를 보고 알맞은 담당에게 보내는 패턴이에요.",
+  "see": "agents-patterns"
+ },
+ {
+  "term": "평가자-최적화",
+  "en": "Evaluator-optimizer",
+  "def": "한쪽이 만들고 다른 쪽이 기준에 맞춰 평가해 피드백을 돌려주는 걸 반복하는 패턴이에요.",
+  "see": "agents-patterns"
+ },
+ {
+  "term": "Ralph 루프",
+  "en": "Ralph loop",
+  "def": "같은 작업 프롬프트로 에이전트를 계속 다시 돌려, 완료 조건을 채우거나 최대 횟수에 닿으면 멈추는 기법이에요. 분명한 완료 기준과 멈춤 한도가 핵심이에요.",
+  "see": "agents-ralph"
+ },
+ {
+  "term": "인터뷰 스킬",
+  "en": "Interview skill",
+  "def": "AI가 한 번에 하나씩 질문하고 추천 답도 내놓으면서, 흐릿한 아이디어를 계획서로 다듬게 하는 스킬이에요. grill-me 스타일이라고도 해요.",
+  "see": "agents-interview"
+ },
+ {
+  "term": "명세서",
+  "en": "Spec",
+  "def": "무엇을 왜, 어떻게 만들지 정리한 문서예요. 수업에서 인터뷰로 만드는 spec.md가 이거예요.",
+  "see": "agents-interview"
+ },
+ {
+  "term": "휴먼 인 더 루프",
+  "en": "Human-in-the-loop",
+  "def": "에이전트가 일하는 중간에 사람이 확인하고 승인하는 지점을 두는 방식이에요. 플랜 승인, 권한 질문이 대표적이에요.",
+  "see": "agents-plan"
+ },
+ {
+  "term": "n8n",
+  "en": "n8n",
+  "def": "노드를 끌어다 이어서 자동화 워크플로우를 만드는 도구예요. 만든 워크플로우를 JSON 파일로 내보내고 가져올 수 있어요.",
+  "see": "basics-api"
+ },
+ {
+  "term": "터미널",
+  "en": "Terminal",
+  "def": "마우스 대신 글자로 명령을 입력해 컴퓨터를 다루는 창이에요. 맥은 '터미널' 앱, 윈도우는 PowerShell이에요.",
+  "see": "basics-terminal"
+ },
+ {
+  "term": "CLI",
+  "en": "Command Line Interface",
+  "def": "터미널에서 글자 명령으로 쓰는 프로그램 방식이에요. claude, git이 모두 CLI 프로그램이에요."
+ },
+ {
+  "term": "셸",
+  "en": "Shell",
+  "def": "터미널 안에서 내가 친 명령을 해석해 실행하는 프로그램이에요. Claude Code 입력창에서 !를 앞에 붙이면 셸 명령을 바로 실행해요.",
+  "see": "basics-terminal"
+ },
+ {
+  "term": "경로",
+  "en": "Path",
+  "def": "파일이 어디 있는지 적은 주소예요. /Users/me/bootcamp/notes.md처럼 바깥 폴더에서 안쪽 파일로 좁혀 가요.",
+  "see": "basics-terminal"
+ },
+ {
+  "term": "IDE",
+  "en": "Integrated Development Environment",
+  "def": "코드 편집, 실행, 검색을 한 화면에서 하는 개발 프로그램이에요. VS Code가 대표적이에요."
+ },
+ {
+  "term": "VS Code",
+  "en": "Visual Studio Code",
+  "def": "마이크로소프트의 무료 코드 편집기예요. Claude Code 확장을 깔아 편집기 안에서 쓸 수도 있어요.",
+  "see": "landscape-surfaces"
+ },
+ {
+  "term": "마크다운",
+  "en": "Markdown",
+  "def": "#, -, ** 같은 간단한 기호로 제목, 목록, 굵은 글씨를 표시하는 글쓰기 형식이에요. 확장자는 .md이고, CLAUDE.md도 마크다운이에요.",
+  "see": "basics-md"
+ },
+ {
+  "term": "JSON",
+  "en": "JSON",
+  "def": "중괄호 안에 \"이름\": 값 쌍으로 데이터를 적는 형식이에요. 설정 파일이나 n8n 워크플로우 파일이 JSON이에요.",
+  "see": "prompt-eng-format"
+ },
+ {
+  "term": "YAML",
+  "en": "YAML",
+  "def": "들여쓰기와 '이름: 값'으로 적는 설정 형식이에요. SKILL.md 맨 위 프론트매터도 YAML이에요."
+ },
+ {
+  "term": "HTML",
+  "en": "HyperText Markup Language",
+  "def": "웹페이지의 뼈대를 만드는 언어예요. 수업에서 피치덱이나 랜딩페이지를 HTML로 만들어요."
+ },
+ {
+  "term": "Mermaid",
+  "en": "Mermaid",
+  "def": "글로 적으면 순서도, 마인드맵, Git 그래프 같은 그림을 그려 주는 문법이에요. 가치사슬 지도를 그릴 때 써요.",
+  "see": "start"
+ },
+ {
+  "term": "API",
+  "en": "Application Programming Interface",
+  "def": "프로그램끼리 정해진 방식으로 요청과 결과를 주고받는 창구예요. 손님과 주방 사이의 웨이터 같은 역할이에요.",
+  "see": "basics-api"
+ },
+ {
+  "term": "API 키",
+  "en": "API key",
+  "def": "API를 쓸 때 내가 누구인지 증명하는 비밀번호 같은 문자열이에요. 다른 사람에게 보여주거나 공개 저장소에 올리면 안 돼요.",
+  "see": "basics-apikey"
+ },
+ {
+  "term": "SDK",
+  "en": "Software Development Kit",
+  "def": "어떤 서비스를 내 프로그램에서 쉽게 쓰도록 묶어 둔 개발 도구 모음이에요. Claude Code를 내 프로그램에 넣는 Agent SDK도 있어요."
+ },
+ {
+  "term": "환경 변수",
+  "en": "Environment variable",
+  "def": "코드 밖에 따로 보관하는 설정값이에요. API 키를 코드에 직접 쓰지 않고 여기에 넣어 둬요. Vercel 같은 배포 서비스에도 따로 등록해요.",
+  "see": "github-gitignore"
+ },
+ {
+  "term": ".env 파일",
+  "en": ".env file",
+  "def": "환경 변수를 모아 적는 파일이에요. 비밀값이 들어 있어서 .gitignore에 넣고 GitHub에는 올리지 않아요.",
+  "see": "github-gitignore"
+ },
+ {
+  "term": "Git",
+  "en": "Git",
+  "def": "파일이 바뀐 이력을 저장하는 버전 관리 도구예요. 게임 세이브 포인트처럼 언제든 예전 상태로 돌아갈 수 있어요.",
+  "see": "github-why"
+ },
+ {
+  "term": "GitHub",
+  "en": "GitHub",
+  "def": "Git 저장소를 인터넷에 올려 보관하고 공유하고 협업하는 서비스예요. Git은 도구, GitHub는 그 기록을 올려 두는 곳이에요.",
+  "see": "github-git-vs-github"
+ },
+ {
+  "term": "저장소",
+  "en": "Repository",
+  "def": "프로젝트 폴더와 그 변경 이력을 함께 묶은 단위예요. 줄여서 repo라고 해요.",
+  "see": "github-words"
+ },
+ {
+  "term": "커밋",
+  "en": "Commit",
+  "def": "변경 내용을 메시지와 함께 저장한 기록 한 칸이에요. \"메인 카피 수정\"처럼 무엇을 바꿨는지 적어요.",
+  "see": "github-words"
+ },
+ {
+  "term": "브랜치",
+  "en": "Branch",
+  "def": "원본은 그대로 두고 따로 실험하는 갈래예요. 마음에 들면 원본에 합치고, 아니면 버리면 돼요.",
+  "see": "github-branch"
+ },
+ {
+  "term": "main 브랜치",
+  "en": "main branch",
+  "def": "저장소의 기본 갈래예요. 보통 완성된, 배포되는 버전이 여기에 있어요.",
+  "see": "github-branch"
+ },
+ {
+  "term": "푸시",
+  "en": "Push",
+  "def": "내 컴퓨터에 쌓인 커밋을 GitHub로 올리는 일이에요.",
+  "see": "github-words"
+ },
+ {
+  "term": "풀",
+  "en": "Pull",
+  "def": "GitHub에 있는 최신 변경을 내 컴퓨터로 내려받아 합치는 일이에요.",
+  "see": "github-words"
+ },
+ {
+  "term": "PR",
+  "en": "Pull Request",
+  "def": "내 브랜치의 변경을 원본에 합쳐 달라고 요청하고 리뷰받는 곳이에요.",
+  "see": "github-words"
+ },
+ {
+  "term": "머지",
+  "en": "Merge",
+  "def": "한 브랜치의 변경을 다른 브랜치에 합치는 일이에요.",
+  "see": "github-words"
+ },
+ {
+  "term": "충돌",
+  "en": "Conflict",
+  "def": "같은 부분을 서로 다르게 고쳐서 Git이 자동으로 합치지 못하는 상태예요. 어느 쪽을 남길지 사람이 골라야 해요."
+ },
+ {
+  "term": "클론",
+  "en": "Clone",
+  "def": "GitHub에 있는 저장소를 이력까지 통째로 내 컴퓨터에 복사하는 일이에요.",
+  "see": "github-words"
+ },
+ {
+  "term": ".gitignore",
+  "en": ".gitignore",
+  "def": "Git이 추적하지 않을 파일 목록을 적는 파일이에요. .env처럼 비밀이 든 파일을 여기에 넣어요.",
+  "see": "github-gitignore"
+ },
+ {
+  "term": "워크트리",
+  "en": "Worktree",
+  "def": "같은 저장소를 다른 폴더에 하나 더 꺼내 두고 다른 브랜치를 동시에 작업하는 Git 기능이에요.",
+  "see": "commands-table"
+ },
+ {
+  "term": "배포",
+  "en": "Deploy",
+  "def": "만든 결과물을 인터넷에 올려 누구나 주소로 볼 수 있게 하는 일이에요.",
+  "see": "github-deploy"
+ },
+ {
+  "term": "Vercel",
+  "en": "Vercel",
+  "def": "GitHub 저장소를 연결해 두면 푸시할 때마다 웹사이트를 자동으로 배포해 주는 서비스예요. 개인 프로젝트는 무료 요금제로 시작할 수 있어요.",
+  "see": "github-deploy"
+ },
+ {
+  "term": "GitHub Pages",
+  "en": "GitHub Pages",
+  "def": "GitHub 저장소에 있는 HTML 파일을 웹사이트로 띄워 주는 기능이에요. 이 페이지도 GitHub Pages로 올라가 있어요."
+ },
+ {
+  "term": "Supabase",
+  "en": "Supabase",
+  "def": "데이터베이스, 로그인, 파일 저장을 웹에서 쉽게 쓰게 해주는 백엔드 서비스예요. 무료 요금제로 시작할 수 있어요.",
+  "see": "basics-api"
+ },
+ {
+  "term": "MVP",
+  "en": "Minimum Viable Product",
+  "def": "핵심 기능만 담아 빨리 만들어 보는 최소한의 제품이에요. 반응을 보고 다음에 뭘 만들지 정해요."
+ }
+]

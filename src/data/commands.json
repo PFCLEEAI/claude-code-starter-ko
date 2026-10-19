@@ -1,0 +1,1618 @@
+[
+ {
+  "cat": "slash",
+  "cmd": "/help",
+  "desc": "도움말과 지금 쓸 수 있는 명령어를 보여줘요",
+  "ex": "/help",
+  "level": 1,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/init",
+  "desc": "프로젝트를 훑어보고 CLAUDE.md 초안을 만들어요",
+  "ex": "/init",
+  "level": 1,
+  "tags": [
+   "설정",
+   "메모리"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/memory",
+  "desc": "CLAUDE.md를 고치고 자동 메모리를 켜고 끄거나 확인해요",
+  "ex": "/memory",
+  "level": 1,
+  "tags": [
+   "메모리",
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/clear [name]",
+  "desc": "컨텍스트를 비우고 새 대화를 시작해요 (별칭 /reset, /new)",
+  "ex": "/clear",
+  "level": 1,
+  "tags": [
+   "컨텍스트",
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/compact [instructions]",
+  "desc": "지금까지 대화를 요약해서 컨텍스트 자리를 비워요",
+  "ex": "/compact 브랜드 톤 결정사항 위주로 남겨줘",
+  "level": 1,
+  "tags": [
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/context [all]",
+  "desc": "컨텍스트가 얼마나 찼는지 색깔 격자로 보여줘요",
+  "ex": "/context",
+  "level": 1,
+  "tags": [
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/btw [question]",
+  "desc": "대화 기록에 남기지 않고 곁가지 질문을 해요",
+  "ex": "/btw 아까 만든 파일 이름이 뭐였지?",
+  "level": 1,
+  "tags": [
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/plan [description]",
+  "desc": "바로 플랜 모드로 들어가 계획부터 세워요",
+  "ex": "/plan 올리브영 신상품 기획서 목차부터 잡아줘",
+  "level": 1,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/rewind",
+  "desc": "대화나 파일을 이전 시점으로 되돌려요 (별칭 /checkpoint, /undo)",
+  "ex": "/rewind",
+  "level": 1,
+  "tags": [
+   "세션",
+   "편집"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/resume [session]",
+  "desc": "예전 대화를 이어가거나 세션 목록을 열어요 (별칭 /continue)",
+  "ex": "/resume 대구관광-카드뉴스",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/model [model]",
+  "desc": "AI 모델을 바꾸고 새 세션 기본값으로 저장해요",
+  "ex": "/model",
+  "level": 1,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/usage",
+  "desc": "세션 비용, 요금제 한도, 사용 통계를 보여줘요 (별칭 /cost, /stats)",
+  "ex": "/usage",
+  "level": 1,
+  "tags": [
+   "비용"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/diff",
+  "desc": "Claude가 고친 내용을 포함해 바뀐 파일을 확인해요",
+  "ex": "/diff",
+  "level": 1,
+  "tags": [
+   "Git",
+   "편집"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/copy [N]",
+  "desc": "Claude의 마지막 답변을 클립보드에 복사해요",
+  "ex": "/copy 2",
+  "level": 1,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/skills",
+  "desc": "쓸 수 있는 스킬 목록을 보고 이름으로 찾아요",
+  "ex": "/skills",
+  "level": 1,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/login",
+  "desc": "Anthropic 계정에 로그인해요",
+  "ex": "/login",
+  "level": 1,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/exit",
+  "desc": "Claude Code를 종료해요 (별칭 /quit)",
+  "ex": "/exit",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/powerup",
+  "desc": "애니메이션 데모로 기능을 익히는 짧은 실습 레슨이에요",
+  "ex": "/powerup",
+  "level": 1,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/config [key=value ...]",
+  "desc": "설정 화면을 열어 테마, 모델 같은 환경을 바꿔요",
+  "ex": "/config",
+  "level": 2,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/permissions",
+  "desc": "도구별 허용·확인·거부 규칙을 관리해요 (별칭 /allowed-tools)",
+  "ex": "/permissions",
+  "level": 2,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/status",
+  "desc": "버전, 모델, 계정, 연결 상태를 보여줘요",
+  "ex": "/status",
+  "level": 2,
+  "tags": [
+   "도움말",
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/doctor",
+  "desc": "설치·설정·CLAUDE.md 문제를 점검하고 해결책을 제안해요 (스킬)",
+  "ex": "/doctor",
+  "level": 2,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/effort [level]",
+  "desc": "모델이 얼마나 깊게 생각할지 low부터 max, auto 중에 정해요",
+  "ex": "/effort high",
+  "level": 2,
+  "tags": [
+   "모델",
+   "비용"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/add-dir <path>",
+  "desc": "작업 폴더를 하나 더 추가해서 그 안 파일도 다루게 해요",
+  "ex": "/add-dir ../brand-assets",
+  "level": 2,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/cd <path>",
+  "desc": "대화는 그대로 두고 작업 폴더만 옮겨요",
+  "ex": "/cd ~/bootcamp/week2",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/rename [name]",
+  "desc": "세션 이름을 바꿔요. 비워두면 대화를 보고 지어줘요",
+  "ex": "/rename 대구관광-카드뉴스",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/branch [name]",
+  "desc": "대화를 지금 지점에서 갈라 다른 방향을 시험해요",
+  "ex": "/branch 감성톤-버전",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/export [filename]",
+  "desc": "지금 대화를 텍스트 파일로 내보내요",
+  "ex": "/export 1027-수업정리.txt",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/recap",
+  "desc": "지금 세션을 한 줄로 요약해줘요",
+  "ex": "/recap",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/background [prompt]",
+  "desc": "세션을 백그라운드로 보내고 터미널을 비워요 (별칭 /bg)",
+  "ex": "/background 끝나면 결과 요약 남겨줘",
+  "level": 2,
+  "tags": [
+   "세션",
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/desktop",
+  "desc": "지금 세션을 Claude Code 데스크톱 앱에서 이어가요 (별칭 /app)",
+  "ex": "/desktop",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/subtask <task>",
+  "desc": "대화를 이어받은 서브에이전트에게 곁일을 맡기고 결과를 받아요",
+  "ex": "/subtask 경쟁 브랜드 3곳 가격대 조사해줘",
+  "level": 2,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/tasks",
+  "desc": "백그라운드 작업과 끝난 서브에이전트를 보고 관리해요 (별칭 /bashes)",
+  "ex": "/tasks",
+  "level": 2,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/agents",
+  "desc": "서브에이전트를 만들고 관리하는 방법을 안내해줘요",
+  "ex": "/agents",
+  "level": 2,
+  "tags": [
+   "에이전트",
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/goal [condition|clear]",
+  "desc": "조건을 정하면 달성될 때까지 Claude가 계속 일해요",
+  "ex": "/goal 체크리스트 10개가 모두 완료될 때까지",
+  "level": 2,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/loop [interval] [prompt]",
+  "desc": "세션이 열려 있는 동안 같은 요청을 반복 실행해요 (스킬)",
+  "ex": "/loop 5m 배포 끝났는지 확인해줘",
+  "level": 2,
+  "tags": [
+   "자동화"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/schedule [description]",
+  "desc": "클라우드에서 도는 정기 작업(루틴)을 만들고 관리해요",
+  "ex": "/schedule 매주 월요일 아침 대구 축제 소식 정리해줘",
+  "level": 2,
+  "tags": [
+   "자동화"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/deep-research <question>",
+  "desc": "웹을 여러 갈래로 검색·교차 확인해 출처 달린 보고서를 써요 (워크플로우: 여러 서브에이전트가 백그라운드에서 나눠 일해요)",
+  "ex": "/deep-research 대구 로컬 브랜드 팝업스토어 사례",
+  "level": 2,
+  "tags": [
+   "리서치"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/claude-in-chrome [task]",
+  "desc": "Claude in Chrome으로 브라우저 작업을 시켜요 (스킬)",
+  "ex": "/claude-in-chrome 내 랜딩페이지 폼이 잘 제출되는지 확인해줘",
+  "level": 2,
+  "tags": [
+   "브라우저"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/chrome",
+  "desc": "Claude in Chrome 연결 설정을 바꿔요",
+  "ex": "/chrome",
+  "level": 2,
+  "tags": [
+   "브라우저",
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/mcp",
+  "desc": "MCP 서버 연결 상태와 로그인을 관리해요",
+  "ex": "/mcp",
+  "level": 2,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/plugin [subcommand]",
+  "desc": "플러그인을 찾아 설치하고 켜고 꺼요",
+  "ex": "/plugin",
+  "level": 2,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/hooks",
+  "desc": "지금 걸려 있는 훅 설정을 확인해요",
+  "ex": "/hooks",
+  "level": 2,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/reload-skills",
+  "desc": "세션 중에 추가·수정한 스킬을 재시작 없이 불러와요",
+  "ex": "/reload-skills",
+  "level": 2,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/fewer-permission-prompts",
+  "desc": "자주 쓰는 읽기 전용 명령을 허용 목록에 넣어 질문을 줄여요 (스킬)",
+  "ex": "/fewer-permission-prompts",
+  "level": 2,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/update-config [request]",
+  "desc": "말로 설명하면 설정 파일을 알맞게 고쳐줘요 (스킬)",
+  "ex": "/update-config 파일 수정 끝날 때마다 알림 훅 걸어줘",
+  "level": 2,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/code-review",
+  "desc": "변경분이나 PR에서 버그를 찾아요. --fix를 붙이면 고쳐요 (스킬)",
+  "ex": "/code-review --fix",
+  "level": 2,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/slides [brief]",
+  "desc": "브리프를 받아 Claude Slides 발표 자료를 만들어요 (스킬)",
+  "ex": "/slides 대구 로컬 브랜드 협업 제안서 10장",
+  "level": 2,
+  "tags": [
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/design [brief]",
+  "desc": "UI 시안, 랜딩페이지, 포스터를 한 캔버스에 그려요 (스킬)",
+  "ex": "/design 동성로 카페 신메뉴 포스터",
+  "level": 2,
+  "tags": [
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/dataviz [request]",
+  "desc": "차트·대시보드를 보기 좋게 만드는 디자인 가이드예요 (스킬)",
+  "ex": "/dataviz 대구 월별 관광객 수 막대그래프",
+  "level": 2,
+  "tags": [
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/insights",
+  "desc": "최근 세션을 분석한 사용 습관 리포트를 HTML로 만들어요",
+  "ex": "/insights",
+  "level": 2,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/rate-limit-options",
+  "desc": "사용 한도에 걸렸을 때 계속 작업할 방법을 보여줘요",
+  "ex": "/rate-limit-options",
+  "level": 2,
+  "tags": [
+   "비용"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/theme",
+  "desc": "색상 테마를 바꿔요. 터미널 배경에 맞추는 auto도 있어요",
+  "ex": "/theme",
+  "level": 2,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/terminal-setup",
+  "desc": "Shift+Enter 줄바꿈 같은 터미널 설정을 깔아줘요",
+  "ex": "/terminal-setup",
+  "level": 2,
+  "tags": [
+   "설정",
+   "편집"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/voice [hold|tap|off]",
+  "desc": "음성 받아쓰기를 켜고 꺼요",
+  "ex": "/voice hold",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/logout",
+  "desc": "Anthropic 계정에서 로그아웃해요",
+  "ex": "/logout",
+  "level": 2,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/advisor [model|off]",
+  "desc": "중요한 순간마다 두 번째 모델에게 조언을 구하게 해요",
+  "ex": "/advisor opus",
+  "level": 3,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/artifact-capabilities",
+  "desc": "아티팩트가 쓸 수 있는 실행 기능 참고 자료를 불러와요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/artifact-diagramming",
+  "desc": "아티팩트에 다이어그램 그리는 가이드를 불러와요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/artifacts",
+  "desc": "내 아티팩트 목록을 보고 세션에 붙이거나 링크를 복사해요",
+  "ex": "/artifacts",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/auto-mode-setup",
+  "desc": "프로젝트에 맞는 자동 모드 환경 설정 초안을 만들어요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/autocompact [auto|<tokens>]",
+  "desc": "컨텍스트가 얼마나 차면 자동 압축할지 정해요",
+  "ex": "/autocompact auto",
+  "level": 3,
+  "tags": [
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/autofix-pr [prompt]",
+  "desc": "클라우드 세션이 PR을 지켜보다 CI 실패나 리뷰를 고쳐 올려요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/batch <instruction>",
+  "desc": "큰 변경을 5~30개 단위로 쪼개 서브에이전트들이 병렬 처리해요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/bug [report]",
+  "desc": "버그를 신고해요. 보내기 전에 동의 화면이 떠요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/claude-api",
+  "desc": "Claude API로 앱을 만들 때 쓰는 참고 자료를 불러와요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "개발"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/color [color|default]",
+  "desc": "이 세션 입력창 색을 바꿔요",
+  "ex": "/color pink",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/debug [description]",
+  "desc": "디버그 로그를 켜고 실행 중 문제를 함께 진단해요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/design-login",
+  "desc": "/design-sync에 쓸 디자인 시스템 접근을 허락해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정",
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/design-sync [hint]",
+  "desc": "저장소의 React 디자인 시스템을 Claude Design에 올려요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "디자인"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/fast [on|off]",
+  "desc": "빠른 모드(fast mode)를 켜고 꺼요",
+  "ex": "/fast on",
+  "level": 3,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/feedback [report]",
+  "desc": "Claude Code에 제품 의견을 보내요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/focus",
+  "desc": "마지막 질문과 최종 답만 보이는 집중 화면을 켜고 꺼요 (전체 화면 렌더링에서만)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/fork [prompt]",
+  "desc": "대화를 복사해 새 백그라운드 세션으로 보내고 나는 계속 일해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "세션",
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/heapdump",
+  "desc": "메모리 사용 진단용 스냅샷을 저장해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/ide",
+  "desc": "IDE 연동을 관리하고 연결 상태를 봐요",
+  "ex": "/ide",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/import [codex|gemini|cursor]",
+  "desc": "Codex, Gemini CLI, Cursor 설정을 Claude Code로 가져와요",
+  "ex": "/import codex --dry-run",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/install-github-app",
+  "desc": "저장소에 Claude GitHub 앱과 Actions 설정을 깔아요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/install-slack-app",
+  "desc": "Claude Slack 앱을 설치해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/keybindings",
+  "desc": "단축키 설정 파일을 열어요",
+  "ex": "/keybindings",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/list-agents",
+  "desc": "Claude가 메시지를 보낼 수 있는 에이전트·세션 목록을 봐요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/mobile",
+  "desc": "Claude 모바일 앱 설치 QR 코드를 보여줘요 (별칭 /ios, /android)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/output-style [style]",
+  "desc": "답변 스타일 목록을 보거나 바꿔요",
+  "ex": "/output-style concise",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/passes",
+  "desc": "친구에게 Claude Code 1주 무료 체험을 나눠줘요 (대상 계정만)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/plugin-authoring",
+  "desc": "Claude Code 확장(mod)을 만들 때 쓰는 참고 자료를 불러와요 (기본 플러그인의 스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/privacy-settings",
+  "desc": "개인정보 설정을 보고 바꿔요 (Pro·Max 요금제)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/radio",
+  "desc": "브라우저에서 Claude FM 로파이 라디오를 열어요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "기타"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/release-notes",
+  "desc": "버전별 변경 내역을 골라 봐요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/reload-plugins",
+  "desc": "재시작 없이 플러그인 변경 사항을 다시 불러와요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/remote-control",
+  "desc": "이 세션을 claude.ai나 Claude 앱에서 이어서 조작하게 해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/remote-env",
+  "desc": "CLI에서 여는 클라우드 세션의 기본 환경을 골라요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/run",
+  "desc": "앱을 직접 띄우고 조작해서 변경이 실제로 되는지 봐요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "개발"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/run-skill-generator",
+  "desc": "/run과 /verify가 앱 띄우는 법을 익히도록 스킬을 써줘요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "개발"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/sandbox",
+  "desc": "샌드박스 모드를 켜고 꺼요 (지원 플랫폼만)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/scroll-speed",
+  "desc": "마우스 휠 스크롤 속도를 조절해요 (전체 화면 렌더링에서만)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/security-review",
+  "desc": "현재 브랜치 변경분의 보안 취약점을 점검해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/setup-bedrock",
+  "desc": "Amazon Bedrock 인증, 지역, 모델을 설정해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/setup-vertex",
+  "desc": "Google Cloud 쪽 인증, 프로젝트, 지역을 설정해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/simplify [target]",
+  "desc": "바뀐 코드에서 정리할 곳을 찾아 고쳐요. 버그 찾기는 아니에요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "개발"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/skill-doctor",
+  "desc": "스킬마다 컨텍스트 비용과 사용 빈도를 보여줘요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "확장",
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/statusline",
+  "desc": "화면 아래 상태 줄을 원하는 대로 꾸며요",
+  "ex": "/statusline 모델 이름이랑 폴더만 보여줘",
+  "level": 3,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/stickers",
+  "desc": "Claude Code 스티커를 주문해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "기타"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/stop",
+  "desc": "붙어 있는 백그라운드 세션을 멈춰요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/team-onboarding",
+  "desc": "최근 30일 사용 기록으로 팀 온보딩 가이드를 만들어요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/teleport",
+  "desc": "클라우드 세션을 이 터미널로 가져와요 (별칭 /tp)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/tui [default|fullscreen]",
+  "desc": "터미널 화면 방식을 바꾸고 대화 그대로 다시 열어요",
+  "ex": "/tui fullscreen",
+  "level": 3,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/ultrareview [PR or branch]",
+  "desc": "클라우드에서 여러 에이전트가 깊이 코드 리뷰를 해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/upgrade",
+  "desc": "더 높은 요금제로 바꾸는 페이지를 열어요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/usage-credits",
+  "desc": "한도에 걸렸을 때 사용 크레딧을 설정하거나 요청해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "비용"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/verify",
+  "desc": "앱을 빌드·실행해서 변경이 제대로 됐는지 확인해요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "개발"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/web-setup",
+  "desc": "로컬 gh 로그인으로 클라우드 세션에 GitHub를 연결해요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/workflow-authoring",
+  "desc": "다이내믹 워크플로우 스크립트 작성 자료를 불러와요 (스킬)",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "slash",
+  "cmd": "/workflows",
+  "desc": "실행 중인 워크플로우를 보고 멈추거나 다시 돌려요",
+  "ex": "/workflows",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude",
+  "desc": "지금 폴더에서 Claude Code 대화를 시작해요",
+  "ex": "cd ~/bootcamp && claude",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude \"query\"",
+  "desc": "첫 요청을 담아서 대화를 시작해요",
+  "ex": "claude \"이 폴더 구조 설명해줘\"",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude -c",
+  "desc": "이 폴더에서 가장 최근 대화를 이어가요 (--continue)",
+  "ex": "claude -c",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude -r \"<session>\"",
+  "desc": "세션 ID나 이름으로 골라서 이어가요 (--resume)",
+  "ex": "claude -r \"대구관광-카드뉴스\"",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude update",
+  "desc": "Claude Code를 최신 버전으로 업데이트해요",
+  "ex": "claude update",
+  "level": 1,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude -v",
+  "desc": "설치된 버전을 확인해요 (--version)",
+  "ex": "claude -v",
+  "level": 1,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude auth login",
+  "desc": "터미널에서 Anthropic 계정에 로그인해요",
+  "ex": "claude auth login",
+  "level": 2,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude auth status",
+  "desc": "로그인 상태를 확인해요",
+  "ex": "claude auth status --text",
+  "level": 2,
+  "tags": [
+   "계정"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude doctor",
+  "desc": "대화를 열지 않고 설치·설정 상태를 점검해요",
+  "ex": "claude doctor",
+  "level": 2,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude -p \"query\"",
+  "desc": "대화창 없이 한 번 답하고 끝나요 (헤드리스, --print)",
+  "ex": "claude -p \"notes.md를 3줄로 요약해줘\"",
+  "level": 2,
+  "tags": [
+   "자동화"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "cat file | claude -p \"query\"",
+  "desc": "다른 명령의 출력을 넘겨받아 처리해요",
+  "ex": "cat review.txt | claude -p \"불만 유형별로 묶어줘\"",
+  "level": 3,
+  "tags": [
+   "자동화"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude mcp",
+  "desc": "MCP 서버를 추가·확인·관리해요",
+  "ex": "claude mcp add --transport http notion https://mcp.notion.com/mcp",
+  "level": 2,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude plugin",
+  "desc": "터미널에서 플러그인을 관리해요 (별칭 claude plugins)",
+  "ex": "claude plugin install skill-creator@claude-plugins-official",
+  "level": 3,
+  "tags": [
+   "확장"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "claude agents",
+  "desc": "백그라운드 세션들을 한 화면에서 보고 관리해요",
+  "ex": "claude agents",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--model",
+  "desc": "이번 세션에 쓸 모델을 정해요 (sonnet, opus, haiku 등)",
+  "ex": "claude --model sonnet",
+  "level": 2,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--permission-mode",
+  "desc": "시작할 권한 모드를 정해요 (plan, acceptEdits 등)",
+  "ex": "claude --permission-mode plan",
+  "level": 2,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--add-dir",
+  "desc": "다른 폴더도 읽고 고칠 수 있게 추가해요",
+  "ex": "claude --add-dir ../brand-assets",
+  "level": 2,
+  "tags": [
+   "설정"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--chrome",
+  "desc": "Chrome 브라우저 연동을 켜고 시작해요",
+  "ex": "claude --chrome",
+  "level": 2,
+  "tags": [
+   "브라우저"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "-n, --name",
+  "desc": "세션에 이름을 붙여 나중에 찾기 쉽게 해요",
+  "ex": "claude -n \"올영-기획\"",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--effort",
+  "desc": "이번 세션의 추론 노력 수준을 정해요",
+  "ex": "claude --effort high",
+  "level": 3,
+  "tags": [
+   "모델",
+   "비용"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "-w, --worktree",
+  "desc": "Git 워크트리를 따로 만들어 그 안에서 작업해요",
+  "ex": "claude -w landing-v2",
+  "level": 3,
+  "tags": [
+   "Git"
+  ]
+ },
+ {
+  "cat": "cli",
+  "cmd": "--dangerously-skip-permissions",
+  "desc": "권한 질문을 모두 건너뛰어요. 격리된 환경에서만 쓰세요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Esc",
+  "desc": "Claude를 멈추고 방향을 바꿔요. 한 작업은 그대로 남아요",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Esc Esc",
+  "desc": "입력창이 비었으면 되감기 메뉴를, 글이 있으면 입력을 지워요",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "세션",
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Shift+Tab",
+  "desc": "권한 모드를 돌아가며 바꿔요 (auto → Manual → acceptEdits → plan)",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "권한"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+C",
+  "desc": "실행 중이면 중단, 아니면 입력 지우기. 두 번 누르면 종료",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+D",
+  "desc": "Claude Code를 종료해요 (두 번 눌러 확인)",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "세션"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+V",
+  "desc": "클립보드 이미지를 붙여넣어요 (iTerm2는 Cmd+V)",
+  "ex": "캡처한 인스타 피드를 붙이고 \"이 톤으로 문구 써줘\"",
+  "level": 1,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Shift+Enter",
+  "desc": "보내지 않고 줄을 바꿔요 (안 되면 /terminal-setup)",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "\\ + Enter",
+  "desc": "어느 터미널에서나 되는 줄바꿈이에요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "↑ / ↓",
+  "desc": "이전에 보낸 입력을 다시 불러와요",
+  "ex": "",
+  "level": 1,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Tab",
+  "desc": "자동완성 제안을 받아들여요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+R",
+  "desc": "예전에 입력한 명령을 검색해요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+O",
+  "desc": "도구 사용 내역까지 자세히 보는 기록 화면을 켜고 꺼요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+T",
+  "desc": "Claude의 할 일 체크리스트를 보이거나 숨겨요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+B",
+  "desc": "실행 중인 명령이나 에이전트를 백그라운드로 보내요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "에이전트"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+G",
+  "desc": "입력 내용을 기본 텍스트 편집기에서 길게 써요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+S",
+  "desc": "쓰던 입력을 잠깐 치워두고, 다시 누르면 되살려요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+L",
+  "desc": "화면이 깨졌을 때 다시 그려요. 대화는 그대로예요",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "화면"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Ctrl+Enter",
+  "desc": "줄 서 있던 메시지를 지금 바로 보내요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Option+P",
+  "desc": "입력을 지우지 않고 모델을 바꿔요 (Windows/Linux는 Alt+P)",
+  "ex": "",
+  "level": 2,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "key",
+  "cmd": "Option+T",
+  "desc": "확장 사고를 켜고 꺼요 (Alt+T). 최신 모델은 항상 켜져 있어서 효과가 없어요",
+  "ex": "",
+  "level": 3,
+  "tags": [
+   "모델"
+  ]
+ },
+ {
+  "cat": "prefix",
+  "cmd": "/",
+  "desc": "맨 앞에 쓰면 명령어·스킬 목록이 떠요",
+  "ex": "/com 까지만 쳐도 /compact가 보여요",
+  "level": 1,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "prefix",
+  "cmd": "@",
+  "desc": "파일 경로를 자동완성해서 콕 집어 알려줘요",
+  "ex": "@notes/daegu-brand.md 이 파일 톤 그대로 써줘",
+  "level": 1,
+  "tags": [
+   "컨텍스트"
+  ]
+ },
+ {
+  "cat": "prefix",
+  "cmd": "!",
+  "desc": "셸 모드. 명령을 바로 실행하고 결과를 대화에 넣어요",
+  "ex": "!ls",
+  "level": 2,
+  "tags": [
+   "편집"
+  ]
+ },
+ {
+  "cat": "prefix",
+  "cmd": "?",
+  "desc": "빈 입력창에서 누르면 단축키 도움말을 열고 닫아요",
+  "ex": "?",
+  "level": 1,
+  "tags": [
+   "도움말"
+  ]
+ },
+ {
+  "cat": "prefix",
+  "cmd": ":",
+  "desc": "이모지 이름을 쳐서 이모지를 넣어요",
+  "ex": ":smile:",
+  "level": 3,
+  "tags": [
+   "편집"
+  ]
+ }
+]

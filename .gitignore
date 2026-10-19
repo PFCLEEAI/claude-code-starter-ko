@@ -1,0 +1,8 @@
+.check/
+__pycache__/
+*.pyc
+.DS_Store
+research/doc-*.md
+
+# internal research notes (curriculum context, raw doc copies) stay local
+research/

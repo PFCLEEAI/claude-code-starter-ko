@@ -1,0 +1,365 @@
+<section id="components" class="chapter" data-title="Claude Code 구성요소" data-emoji="🧩">
+  <h2>Claude Code 구성요소</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>Claude Code는 똑똑한 모델 하나에 CLAUDE.md, 스킬, MCP, 훅, 서브에이전트 같은 장치를 둘러 붙인 "하네스"예요.</li>
+    <li>처음엔 <code>CLAUDE.md</code>와 권한 모드·플랜 모드만 알아도 충분해요. 나머지는 수업에서 하나씩 열어요.</li>
+    <li>헷갈리면 맨 아래 <a href="#components-compare">한 장 비교표</a>만 다시 보세요.</li>
+  </ul></div>
+
+  <p>수업 둘째 날부터 "CLAUDE.md 만들어 보세요", "스킬로 저장하세요", "MCP 연결하세요" 같은 말이 쏟아져요. 단어는 많은데 사실 다 같은 그림의 부품이에요.</p>
+  <p>이 장에서는 그 그림 한 장을 먼저 보고, 부품을 하나씩 짧게 살펴봐요. 깊은 설정법은 공식 문서 링크로 넘길게요.</p>
+
+  <h3 id="components-anatomy">Claude Code 해부도</h3>
+  <p>가운데에는 Claude 모델이 있어요. 모델은 글을 읽고 생각하고 답을 쓰는 "두뇌"예요. 그런데 두뇌만으로는 파일을 열거나 내 규칙을 기억하지 못해요.</p>
+  <p>그래서 Claude Code는 모델 주변에 여러 장치를 붙여요. 이렇게 모델을 감싸서 일 잘하는 에이전트로 만드는 장치 전체를 <strong>하네스(harness)</strong>라고 불러요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  M["🧠 Claude 모델<br/>생각하고 답을 씀"]
+  T["🔧 도구<br/>파일 읽기·수정, 명령 실행"]
+  P["🚦 권한 모드<br/>어디까지 묻지 않고 할지"]
+  C["📄 CLAUDE.md<br/>항상 읽는 안내서"]
+  S["📘 스킬<br/>필요할 때 꺼내는 매뉴얼"]
+  MCP["🔌 MCP<br/>외부 서비스 연결"]
+  H["⚙️ 훅<br/>특정 순간 자동 실행"]
+  SA["👥 서브에이전트<br/>따로 일하는 조수"]
+  PL["📦 플러그인<br/>위 장치들을 묶은 상자"]
+  C --> M
+  S --> M
+  M --> T
+  P --> T
+  MCP --> T
+  H -->|"도구 전후·세션 시작·끝"| T
+  M --> SA
+  PL --> S
+  PL --> MCP
+  PL --> H
+  PL --> SA</pre><figcaption>모델(가운데)을 둘러싼 하네스예요.</figcaption></figure>
+
+  <div class="analogy"><strong>비유</strong> 모델은 머리 좋은 신입 인턴이에요. CLAUDE.md는 첫날 받는 업무 안내서, 스킬은 서랍 속 매뉴얼, MCP는 노트북의 USB-C 포트(어떤 사내 시스템이든 같은 방식으로 꽂음), 훅은 "문 열리면 불 켜짐" 같은 자동 센서, 서브에이전트는 잠깐 불러 쓰는 동료, 권한 모드는 결재 라인이에요.</div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 팀 프로젝트 폴더에서 올리브영 비건 선크림 카드뉴스 문구를 부탁해요.</p>
+    <pre>비건 선크림 카드뉴스 문구 5장 써서 drafts 폴더에 저장해줘</pre>
+    <p>결과: 요청은 한 줄인데 부품 여러 개가 같이 움직여요. CLAUDE.md의 "해요체로" 규칙을 지키고, 카드뉴스 스킬이 있으면 펼쳐 보고, 파일을 저장하기 직전엔 권한 모드에 따라 "저장해도 될까요?"를 물어요.</p>
+  </div>
+
+  <h3 id="components-claude-md">CLAUDE.md: 매번 읽는 안내서</h3>
+  <p><code>CLAUDE.md</code>는 평범한 마크다운 파일이에요. Claude Code는 세션을 시작할 때마다 이 파일을 읽고 대화 내내 참고해요.</p>
+  <p>"답은 한국어로", "출처 링크는 꼭 달아줘", "노트는 notes 폴더에 저장" 같은 말을 매번 반복하고 있다면 여기 적어 두면 돼요.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>종류</th><th>위치</th><th>누구에게 적용</th><th>이런 걸 적어요</th></tr></thead>
+    <tbody>
+      <tr><td>전역(사용자)</td><td><code>~/.claude/CLAUDE.md</code></td><td>내 컴퓨터의 모든 프로젝트</td><td>"항상 해요체로 답해줘" 같은 내 취향</td></tr>
+      <tr><td>프로젝트</td><td><code>./CLAUDE.md</code> 또는 <code>./.claude/CLAUDE.md</code></td><td>이 폴더에서 일하는 모두 (Git으로 올리면 팀원도 같은 파일을 받아요. <a href="#github">08장</a> 참고)</td><td>폴더 구조, 저장 규칙, 팀 공통 작업 방식</td></tr>
+      <tr><td>로컬</td><td><code>./CLAUDE.local.md</code></td><td>이 폴더의 나만</td><td>공유하기 싫은 개인 메모. <code>.gitignore</code>에 추가해요</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>중요한 점은 이 파일들이 서로를 <strong>덮어쓰지 않고 이어 붙는다</strong>는 거예요. 위쪽 폴더부터 지금 폴더 순서로 쌓이고, 지금 폴더에 가까운 내용일수록 나중에 읽혀요. 같은 폴더 안에서는 <code>CLAUDE.local.md</code>가 <code>CLAUDE.md</code> 뒤에 붙어요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart TD
+  A["① 전역<br/>~/.claude/CLAUDE.md"] --> B["② 상위 폴더의 CLAUDE.md"]
+  B --> C["③ 지금 폴더의 CLAUDE.md"]
+  C --> D["④ 지금 폴더의 CLAUDE.local.md"]
+  D --> E["📚 전부 이어 붙여서<br/>세션 시작 때 컨텍스트에 넣음"]
+  F["하위 폴더의 CLAUDE.md"] -.->|"그 폴더 파일을 만질 때"| E</pre><figcaption>시작할 때 위에서 아래 순서로 읽어요. 하위 폴더 것은 Claude가 그 폴더 파일을 읽거나 고칠 때 추가로 불러와요.</figcaption></figure>
+
+  <p><strong>만드는 법</strong>은 두 가지예요.</p>
+  <ol class="steps">
+    <li><code>/init</code>을 입력하면 Claude가 폴더를 살펴보고 시작용 <code>CLAUDE.md</code>를 만들어 줘요. 이미 있으면 덮어쓰지 않고 고칠 점을 제안해요.</li>
+    <li><code>/memory</code>를 입력하면 전역·프로젝트·로컬 파일 목록이 뜨고, 골라서 바로 편집할 수 있어요. 아직 없는 파일을 고르면 새로 만들어 줘요.</li>
+  </ol>
+  <p>잘 읽혔는지는 <code>/context</code>를 입력해서 <strong>Memory files</strong> 목록에서 확인해요.</p>
+
+  <details class="deep"><summary>더 알아보기: CLAUDE.md 샘플</summary>
+  <p>대구 로컬 브랜드 리서치 폴더라면 이 정도로 시작하면 충분해요.</p>
+  <pre><code># 대구 로컬 브랜드 리서치
+
+## 이 폴더는
+- 대구 로컬 브랜드(카페, 베이커리, 굿즈) 조사 노트를 모으는 곳이에요.
+
+## 규칙
+- 답변은 한국어 해요체로 써줘.
+- 자료를 인용하면 출처 링크를 꼭 붙여줘.
+- 확인되지 않은 수치는 "추정"이라고 표시해줘.
+- 새 노트는 notes/브랜드이름.md 로 저장해줘.
+
+## 자주 하는 일
+- 브랜드 조사: 창업 연도, 대표 상품, 타깃 고객, 인스타 말투 정리
+- 비교표: 브랜드 3곳을 표 하나로 비교</code></pre>
+  </details>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 대구 브랜드를 조사할 때마다 "출처 달아줘"를 붙이는 게 귀찮아졌어요.</p>
+    <pre>앞으로 이 폴더에서는 출처 링크를 꼭 달고, 확인 안 된 숫자엔 "추정"이라고 적어줘. 이거 CLAUDE.md에 추가해줘.</pre>
+    <p>결과: Claude가 <code>./CLAUDE.md</code>의 규칙 목록에 두 줄을 넣어요. 다음 날 새 세션에서 "앞산 카페거리 브랜드 3곳 조사해줘"라고만 해도 출처와 "추정" 표시가 붙어 나와요.</p>
+  </div>
+
+  <div class="callout tip">💡 짧을수록 잘 지켜요. 공식 문서는 파일 하나당 200줄 이하를 권해요. 길어지면 컨텍스트를 차지하고 오히려 덜 따라요.</div>
+  <div class="callout warn">⚠️ CLAUDE.md는 "부탁"이지 "강제"가 아니에요. Claude가 깜빡할 수 있어요. 무슨 일이 있어도 막아야 하는 규칙은 아래 <a href="#components-hooks">훅</a>으로 만들어요.</div>
+
+  <details class="deep"><summary>더 알아보기: AGENTS.md, 파일 불러오기</summary>
+    <p><code>AGENTS.md</code>는 OpenAI Codex 같은 다른 코딩 에이전트가 쓰는 안내서 이름이에요. Claude Code(v2.1.277 이상)는 폴더에 <code>CLAUDE.md</code>가 없으면 <code>AGENTS.md</code>를 대신 읽어요.</p>
+    <p>둘 다 있으면 기본적으로 <code>CLAUDE.md</code>만 읽어요. 한 파일로 같이 쓰고 싶으면 <code>CLAUDE.md</code> 첫 줄에 <code>@AGENTS.md</code>라고 적어서 불러오면 돼요. <code>@경로</code> 문법으로 다른 파일도 불러올 수 있어요.</p>
+  </details>
+
+  <h3 id="components-memory">자동 메모리(auto memory)</h3>
+  <p>CLAUDE.md는 <strong>내가</strong> 쓰는 안내서예요. 자동 메모리는 <strong>Claude가</strong> 스스로 적는 메모장이에요. 내가 고쳐 준 점, 내 작업 취향, 진행 중인 일 같은 걸 다음 세션을 위해 적어 둬요.</p>
+  <p>메모는 <code>~/.claude/projects/&lt;프로젝트&gt;/memory/</code> 폴더에 쌓이고, 목차 파일인 <code>MEMORY.md</code>의 앞부분(200줄 또는 25KB까지)이 매 세션 시작 때 읽혀요. 내 컴퓨터에만 있고 다른 기기와 공유되지 않아요.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>CLAUDE.md</th><th>자동 메모리</th></tr></thead>
+    <tbody>
+      <tr><td>누가 쓰나</td><td>나</td><td>Claude</td></tr>
+      <tr><td>내용</td><td>지시와 규칙</td><td>배운 점, 내 취향, 고쳐 준 내용</td></tr>
+      <tr><td>이렇게 말하면</td><td>"이거 CLAUDE.md에 추가해줘"</td><td>"이거 기억해줘"</td></tr>
+    </tbody>
+  </table></div>
+  <p>둘 다 <code>/memory</code> 하나에서 관리해요. CLAUDE.md를 열어 고치고, 자동 메모리를 켜고 끄거나 메모 폴더를 열 수 있어요.</p>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 피치덱 표를 만들 때마다 Claude가 머리글을 영어로 써요.</p>
+    <pre>표 머리글은 앞으로 항상 한국어로 써줘. 이거 기억해줘.</pre>
+    <p>결과: Claude가 자동 메모리에 메모를 남겨요(화면에 "Saved 1 memory" 같은 표시가 떠요). 다음 세션부터는 보통 따로 말하지 않아도 머리글이 한국어로 나와요. 안 지켜지면 <code>/memory</code>에서 메모를 확인하거나 CLAUDE.md에 규칙으로 적어요.</p>
+  </div>
+
+  <h3 id="components-permissions">권한 모드와 플랜 모드</h3>
+  <p>권한 모드는 Claude가 <strong>나한테 묻지 않고</strong> 어디까지 해도 되는지 정하는 스위치예요. 파일 하나 고칠 때마다 물어보게 할 수도 있고, 알아서 쭉 진행하게 할 수도 있어요.</p>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>모드 (데스크톱 앱 이름)</th><th>묻지 않고 하는 일</th><th>이럴 때</th></tr></thead>
+    <tbody>
+      <tr><td><code>default</code> (Manual)</td><td>파일 읽기만</td><td>하나하나 직접 확인하고 싶을 때, 중요한 작업</td></tr>
+      <tr><td><code>acceptEdits</code> (Accept edits)</td><td>읽기, 파일 수정, <code>mkdir</code>·<code>mv</code> 같은 기본 파일 명령</td><td>수정 결과를 보면서 빠르게 다듬을 때</td></tr>
+      <tr><td><code>plan</code> (Plan)</td><td>읽고 조사만 하고, 원본 파일은 고치지 않음</td><td>큰 작업 전에 계획부터 보고 싶을 때</td></tr>
+      <tr><td><code>auto</code> (Auto)</td><td>거의 전부. 대신 별도 검사 모델이 위험한 행동을 걸러요</td><td>긴 작업, 확인 버튼 누르기 지칠 때</td></tr>
+    </tbody>
+  </table></div>
+  <details class="deep"><summary>더 알아보기: 고급 모드</summary>
+    <div class="table-wrap"><table>
+      <thead><tr><th>모드 (데스크톱 앱 이름)</th><th>묻지 않고 하는 일</th><th>이럴 때</th></tr></thead>
+      <tbody>
+        <tr><td><code>dontAsk</code></td><td>미리 허용한 도구만. 나머지는 거절</td><td>자동화 스크립트용 (터미널 전용)</td></tr>
+        <tr><td><code>bypassPermissions</code> (Bypass permissions)</td><td>전부</td><td>격리된 컨테이너·가상머신 전용. 입문자는 쓰지 마세요</td></tr>
+      </tbody>
+    </table></div>
+  </details>
+
+  <p><strong>바꾸는 법</strong>: 터미널에서는 <kbd>Shift</kbd>+<kbd>Tab</kbd>을 누를 때마다 모드가 바뀌고, 입력창 아래 상태 표시줄에 지금 모드가 떠요. 데스크톱 앱에서는 전송 버튼 옆 모드 선택기에서 골라요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["auto"] -->|"Shift+Tab"| B["default<br/>Manual"]
+  B -->|"Shift+Tab"| C["acceptEdits"]
+  C -->|"Shift+Tab"| D["plan"]
+  D -->|"Shift+Tab"| A</pre><figcaption>터미널 기본 순환. auto는 사용할 수 있는 환경에서만 순환에 들어가요.</figcaption></figure>
+
+  <p><strong>플랜 모드</strong>는 "일단 계획만 세워 줘"예요. Claude가 파일을 읽고 조사한 뒤 계획서를 보여 주고, 내가 승인하기 전까지는 원본을 고치지 않아요. 올리브영 신상품 기획안 폴더를 통째로 정리시키기 전에 쓰면 딱이에요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["요청<br/>/plan 기획 폴더 정리해줘"] --> B["Claude가<br/>읽고 조사"]
+  B --> C["계획서 제시"]
+  C -->|"No, keep planning"| B
+  C -->|"Yes"| D["승인한 모드로<br/>실제 수정 시작"]</pre><figcaption>계획이 마음에 안 들면 계속 다듬고, 마음에 들면 승인해서 실행해요.</figcaption></figure>
+
+  <ul>
+    <li>들어가기: <kbd>Shift</kbd>+<kbd>Tab</kbd>으로 plan까지 돌리거나, 요청 앞에 <code>/plan</code>을 붙여요.</li>
+    <li>계획 승인 화면에서 자동 진행(auto 또는 수정 자동 승인)과 하나씩 승인 중에 고를 수 있어요.</li>
+    <li>승인 전에 <kbd>Ctrl</kbd>+<kbd>G</kbd>를 누르면 계획서를 편집기에서 직접 고칠 수 있어요.</li>
+    <li>잘못 고쳤다면 터미널에서는 빈 입력창에서 <kbd>Esc</kbd> 두 번이나 <code>/rewind</code>로 되돌려요. 자세한 건 <a href="#commands-top10">명령어 TOP 10</a>을 보세요.</li>
+  </ul>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 지역 관광 콘텐츠 노트 30개가 한 폴더에 뒤섞여 있어요. 뭐가 어디로 옮겨질지 먼저 보고 싶어요.</p>
+    <pre>/plan notes 폴더의 노트를 지역별 하위 폴더로 나눠서 정리해줘</pre>
+    <p>결과(예시 답변): Claude가 노트를 읽고 "중구/ 수성구/ 달성군/ 세 폴더를 만들고, 이 파일은 여기로 옮길게요" 같은 계획서를 보여줘요. 승인하기 전까지는 파일이 하나도 안 움직여요.</p>
+  </div>
+  <div class="callout note">📌 최신 버전(v2.1.283 이상) 터미널에서는 새 세션이 기본으로 Auto 모드로 시작해요. Auto를 쓸 수 없는 환경이면 Manual로 시작해요. 처음 써 볼 땐 상태 표시줄을 보고, 불안하면 <kbd>Shift</kbd>+<kbd>Tab</kbd>으로 Manual이나 Plan으로 바꿔 두세요.</div>
+
+  <h3 id="components-skills">스킬(Skill): 필요할 때 꺼내는 매뉴얼</h3>
+  <p>스킬은 <code>SKILL.md</code> 파일 하나에 적은 작업 매뉴얼이에요. "우리 브랜드 말투로 인스타 캡션 쓰기", "관광 콘텐츠 카드뉴스 기획 순서"처럼 반복하는 절차를 담아요.</p>
+  <p>CLAUDE.md와 가장 큰 차이는 <strong>읽는 시점</strong>이에요. CLAUDE.md는 매번 통째로 읽지만, 스킬은 이름과 설명(description)만 들고 있다가 쓸 때 본문을 펼쳐요. 그래서 길게 써도 평소엔 부담이 거의 없어요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["평소<br/>스킬 이름과 설명만 알고 있음"] --> B{"요청이 설명과 맞나?"}
+  B -->|"맞음"| C["SKILL.md 본문을 펼쳐서 따라 함"]
+  U["내가 /스킬이름 입력"] --> C</pre><figcaption>Claude가 알아서 꺼내 쓰거나, 내가 <code>/스킬이름</code>으로 직접 불러요.</figcaption></figure>
+
+  <ul>
+    <li>나만 쓰는 스킬: <code>~/.claude/skills/&lt;스킬이름&gt;/SKILL.md</code> (내 모든 프로젝트)</li>
+    <li>프로젝트 스킬: <code>.claude/skills/&lt;스킬이름&gt;/SKILL.md</code> (이 폴더, Git으로 팀 공유)</li>
+    <li>목록 보기: <code>/skills</code></li>
+  </ul>
+  <p>맨 위 <code>---</code> 두 줄 사이는 이름표예요. <code>name</code>은 <code>/</code> 뒤에 칠 이름, <code>description</code>은 언제 쓰는지 설명이에요. 그 아래가 Claude가 따라 할 본문이에요. 파일은 직접 안 만들어도 돼요. "아래 내용으로 .claude/skills/brand-caption/SKILL.md 만들어줘"라고 Claude에게 부탁하면 돼요.</p>
+  <pre><code>---
+name: brand-caption
+description: 대구 로컬 카페 브랜드 말투로 인스타 캡션을 쓴다. 캡션, 인스타 문구 요청이 오면 사용.
+---
+
+1. 브랜드 말투: 다정한 반말, 이모지 2개 이하
+2. 첫 줄에 계절감 있는 한 문장
+3. 해시태그 5개 (지역명 1개 포함)</code></pre>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 위 <code>brand-caption</code> 스킬을 저장해 둔 상태예요.</p>
+    <pre>/brand-caption 신메뉴 대추 라떼 출시</pre>
+    <p>또는 이렇게 그냥 말해도 돼요.</p>
+    <pre>이번 주 신메뉴 인스타 캡션 써줘</pre>
+    <p>결과: 첫 번째처럼 직접 부르면 바로, 두 번째처럼 말하면 Claude가 description을 보고 스스로 스킬을 꺼내요. 어느 쪽이든 다정한 반말, 이모지 2개 이하, 지역명이 든 해시태그 5개로 캡션이 나와요.</p>
+  </div>
+  <div class="callout tip">💡 Claude가 자동으로 꺼낼지 말지는 <code>description</code>이 정해요. "언제 쓰는지"까지 적어 주세요. 배포처럼 내가 정한 때만 돌려야 하는 스킬은 <code>disable-model-invocation: true</code>를 넣어 자동 실행을 막아요.</div>
+
+  <h3 id="components-plugins">플러그인(Plugin): 한 번에 설치하는 묶음</h3>
+  <p>플러그인은 스킬, 서브에이전트, 훅, MCP 서버를 한 상자에 담아 한 번에 설치하는 묶음이에요. 남이 잘 만들어 둔 세팅을 통째로 받아 쓰거나, 내 세팅을 팀원에게 나눠 줄 때 써요.</p>
+  <p>플러그인은 <strong>마켓플레이스(marketplace)</strong>라는 목록에서 골라요. Anthropic 공식 마켓플레이스는 터미널에서 처음 실행할 때 자동으로 추가돼요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["🏪 마켓플레이스<br/>플러그인 목록"] --> B["📦 플러그인"]
+  B --> C["📘 스킬"]
+  B --> D["👥 서브에이전트"]
+  B --> E["⚙️ 훅"]
+  B --> F["🔌 MCP 서버"]</pre><figcaption>마켓플레이스에서 플러그인을 고르면, 안에 든 부품이 한꺼번에 들어와요.</figcaption></figure>
+
+  <ul>
+    <li>터미널: <code>/plugin</code>을 입력하고 <strong>Discover</strong> 탭에서 골라 설치해요.</li>
+    <li>다른 마켓플레이스는 <code>/plugin marketplace add</code>로 추가해요.</li>
+    <li>데스크톱 앱: 입력창 옆 <strong>+</strong> 버튼 → <strong>Plugins</strong> → <strong>Add plugin</strong></li>
+  </ul>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 브랜드 스킬을 처음 만들어 보는데, 스킬 만들기를 도와주는 세팅을 받아 쓰고 싶어요.</p>
+    <pre>/plugin install skill-creator@claude-plugins-official</pre>
+    <p>결과: 공식 마켓플레이스에서 <code>skill-creator</code> 플러그인이 설치돼요. 설치 요약에 바로 켜졌는지, <code>/reload-plugins</code>를 실행해야 하는지 나와요.</p>
+  </div>
+  <div class="callout warn">⚠️ 켜 둔 플러그인은 쓰지 않는 세션에서도 컨텍스트를 조금씩 차지하고, 내 권한으로 실행돼요. 믿을 만한 것만, 필요한 것만 설치하세요.</div>
+
+  <h3 id="components-mcp">MCP: 외부 서비스와 잇는 USB-C</h3>
+  <p>MCP(Model Context Protocol)는 Claude를 Notion, Gmail, 구글 드라이브, Figma 같은 외부 서비스와 연결하는 공통 규격이에요. MCP 서버를 하나 연결하면 Claude가 그 서비스를 다루는 도구를 새로 얻어요.</p>
+  <div class="analogy"><strong>비유</strong> USB-C 포트를 떠올리세요. 노트북에 USB-C 구멍 하나만 있으면 충전기, 모니터, 외장하드를 다 꽂을 수 있죠. MCP도 규격이 하나라서 어떤 서비스든 같은 방식으로 꽂아요.</div>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  CC["Claude Code"] --- A["🔌 Notion MCP"]
+  CC --- B["🔌 Gmail MCP"]
+  CC --- C["🔌 Figma MCP"]
+  A --> A2["관광 콘텐츠 기획 DB"]
+  B --> B2["협업 제안 메일 초안"]
+  C --> C2["카드뉴스 디자인"]</pre><figcaption>MCP 서버마다 그 서비스를 다루는 도구가 Claude에게 추가돼요.</figcaption></figure>
+
+  <p>데스크톱 앱에서는 입력창 옆 <strong>+</strong> 버튼 → <strong>Connectors</strong>에서 Notion, Slack, GitHub 같은 서비스를 클릭으로 연결할 수 있어요(커넥터도 MCP 서버예요). 목록에 없는 서비스만 아래처럼 터미널에서 추가해요.</p>
+  <p>터미널 추가는 Claude 입력창 말고 일반 셸에서 이렇게 해요. 공식 문서의 실제 예시예요.</p>
+  <pre><code>claude mcp add --transport http notion https://mcp.notion.com/mcp</code></pre>
+  <p>연결 상태 확인과 로그인은 Claude 안에서 <code>/mcp</code>로 해요.</p>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: Notion MCP를 연결했어요. 관광 콘텐츠 기획 DB는 노션에 있어요.</p>
+    <pre>노션 "대구 관광 콘텐츠" 데이터베이스에서 이번 주 마감인 항목만 뽑아서 표로 정리해줘</pre>
+    <p>결과: 노션을 열어 복사해 붙여넣지 않아도 돼요. Claude가 Notion MCP 도구로 직접 읽어 와 표를 만들어요. 권한 모드에 따라 처음엔 그 도구를 써도 되는지 물어봐요.</p>
+  </div>
+
+  <details class="deep"><summary>더 알아보기: MCP 범위</summary>
+  <div class="table-wrap"><table>
+    <thead><tr><th>범위(scope)</th><th>어디서 쓰나</th><th>팀 공유</th><th>저장 위치</th></tr></thead>
+    <tbody>
+      <tr><td>local (기본값)</td><td>지금 프로젝트만</td><td>아니요</td><td><code>~/.claude.json</code></td></tr>
+      <tr><td>project</td><td>지금 프로젝트만</td><td>예 (Git)</td><td>프로젝트 루트의 <code>.mcp.json</code></td></tr>
+      <tr><td>user</td><td>내 모든 프로젝트</td><td>아니요</td><td><code>~/.claude.json</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>범위는 <code>--scope project</code>나 <code>--scope user</code>처럼 붙여서 정해요.</p>
+  </details>
+
+  <h3 id="components-hooks">훅(Hook): 특정 순간 자동으로 도는 명령</h3>
+  <p>훅은 "이 일이 생기면 항상 이 명령을 실행해"라는 규칙이에요. Claude가 판단해서 하는 게 아니라 Claude Code가 기계적으로 실행해서, 빠지는 일이 없어요.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  E["📍 이벤트 발생<br/>예: 파일 수정 직후"] --> H["⚙️ 훅이 명령 실행"]
+  H --> R1["결과 1<br/>자동 정리·검사"]
+  H --> R2["결과 2<br/>위험한 행동 차단"]</pre><figcaption>이벤트가 생기면 정해 둔 명령이 무조건 돌아요.</figcaption></figure>
+
+  <details class="deep"><summary>더 알아보기: 자주 쓰는 훅 이벤트 5가지</summary>
+  <div class="table-wrap"><table>
+    <thead><tr><th>이벤트</th><th>언제</th><th>쓰임 예시</th></tr></thead>
+    <tbody>
+      <tr><td><code>Notification</code></td><td>Claude가 내 입력이나 허락을 기다릴 때</td><td>데스크톱 알림 띄우기</td></tr>
+      <tr><td><code>PreToolUse</code></td><td>도구 실행 직전 (막을 수 있음)</td><td>중요 파일 수정 막기</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>도구 실행 성공 직후</td><td>파일 고친 뒤 자동 정리</td></tr>
+      <tr><td><code>SessionStart</code></td><td>세션 시작·재개 때</td><td>필요한 맥락 미리 넣기</td></tr>
+      <tr><td><code>Stop</code></td><td>Claude가 답을 마쳤을 때</td><td>작업 끝 알림</td></tr>
+    </tbody>
+  </table></div>
+  <p>이 밖에도 이벤트가 30개 넘게 있어요. 전체 목록은 <a class="ref" href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noopener">공식 문서 ↗</a>를 보세요.</p>
+  </details>
+
+  <p>훅은 설정 파일(<code>settings.json</code>)에 적어요. JSON을 직접 쓰기 어렵다면 "Claude가 내 입력을 기다릴 때 맥 알림 띄우는 훅 만들어줘"처럼 부탁해도 돼요. 만든 뒤 <code>/hooks</code>로 목록을 확인해요.</p>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 긴 브랜드 리서치를 돌려 두고 딴 창에서 피치덱을 만들다 보면, Claude가 확인을 기다리는 걸 자꾸 놓쳐요.</p>
+    <pre>Claude가 내 입력을 기다릴 때 맥 알림이 뜨는 훅을 만들어서 ~/.claude/settings.json에 넣어줘</pre>
+    <p>결과: 아래 "알림 훅 예시"와 같은 설정이 들어가요. 그다음부턴 Claude가 허락이나 답을 기다릴 때마다 화면 구석에 알림이 떠요. 훅이라서 빠지는 날이 없어요.</p>
+  </div>
+  <details class="deep"><summary>더 알아보기: 알림 훅 예시 (macOS)</summary>
+  <pre><code>{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+  <p>공식 문서의 첫 훅 예시예요. <code>~/.claude/settings.json</code>에 넣으면 Claude가 기다릴 때마다 맥 알림이 떠요.</p>
+  <p>알림이 안 뜨면 먼저 터미널에서 <code>osascript -e 'display notification "test"'</code>를 한 번 실행하세요. 그다음 시스템 설정 → 알림에서 '스크립트 편집기(Script Editor)'를 찾아 알림 허용을 켜요.</p>
+  </details>
+
+  <h3 id="components-subagents">서브에이전트(Subagent): 따로 일하고 요약만 주는 조수</h3>
+  <p>서브에이전트는 메인 대화와 <strong>분리된 컨텍스트</strong>에서 일하는 조수예요. 자료를 잔뜩 뒤지는 일을 맡기면, 조수가 그 자료를 다 읽고 요약만 돌려줘요. 내 대화창은 깨끗하게 유지되죠.</p>
+
+  <figure class="diagram"><pre class="mermaid">flowchart TD
+  M["🧠 메인 대화<br/>대구 관광 콘텐츠 기획"] --> A["👤 조수 1<br/>동성로 맛집 조사"]
+  M --> B["👤 조수 2<br/>근대골목 역사 조사"]
+  M --> C["👤 조수 3<br/>경쟁 콘텐츠 조사"]
+  A -->|"요약만"| M
+  B -->|"요약만"| M
+  C -->|"요약만"| M</pre><figcaption>조수마다 자기 책상(컨텍스트)에서 일하고, 결과 요약만 메인으로 돌아와요.</figcaption></figure>
+
+  <ul>
+    <li>Claude는 코드나 폴더를 훑어볼 때 기본 제공되는 <code>Explore</code> 같은 서브에이전트에 알아서 맡기기도 해요.</li>
+    <li>나만의 서브에이전트는 마크다운 파일 하나예요. 프로젝트용은 <code>.claude/agents/</code>, 내 모든 프로젝트용은 <code>~/.claude/agents/</code>에 둬요.</li>
+    <li>만들기는 "리서치 전담 서브에이전트 만들어줘"처럼 Claude에게 부탁하는 게 제일 쉬워요. 최신 버전에서 <code>/agents</code>는 이 방법을 안내하는 메시지만 보여줘요.</li>
+  </ul>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 대구 관광 콘텐츠 기획에 필요한 조사 세 가지를 한꺼번에 맡기고 싶어요.</p>
+    <pre>서브에이전트 3개로 나눠서 동성로 맛집, 근대골목 역사, 경쟁 관광 콘텐츠를 각각 조사하고 요약만 가져와줘</pre>
+    <p>결과(예시): 조수 셋이 각자 웹을 찾아 읽어요. 메인 대화에는 원문 대신 주제마다 몇 줄짜리 요약만 남아서, 이어서 "그럼 코스 짜줘"라고 해도 대화가 가볍게 유지돼요.</p>
+  </div>
+  <div class="callout note">📌 서브에이전트도 각자 요청을 보내서 사용량은 똑같이 차감돼요. 조수를 많이 부르면 그만큼 빨리 닳아요.</div>
+
+  <h3 id="components-compare">한 장 비교표</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>이름</th><th>무엇</th><th>언제 쓰나</th><th>어디 저장</th><th>비유</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CLAUDE.md</strong></td><td>매 세션 읽는 지시·규칙</td><td>매번 반복하는 말이 있을 때</td><td><code>~/.claude/CLAUDE.md</code>, <code>./CLAUDE.md</code>, <code>./CLAUDE.local.md</code></td><td>첫날 받는 업무 안내서</td></tr>
+      <tr><td><strong>스킬</strong></td><td>필요할 때 펼치는 작업 매뉴얼</td><td>반복하는 절차·체크리스트</td><td><code>.claude/skills/이름/SKILL.md</code>, <code>~/.claude/skills/</code></td><td>서랍 속 매뉴얼 바인더</td></tr>
+      <tr><td><strong>플러그인</strong></td><td>스킬·에이전트·훅·MCP 묶음</td><td>남의 세팅을 통째로 받거나 나눌 때</td><td><code>/plugin</code>으로 설치 (<code>~/.claude/plugins/</code>)</td><td>부서 스타터 키트 상자</td></tr>
+      <tr><td><strong>MCP</strong></td><td>외부 서비스 연결 규격</td><td>Notion·Gmail 같은 서비스를 다룰 때</td><td><code>~/.claude.json</code>, <code>.mcp.json</code></td><td>USB-C 포트</td></tr>
+      <tr><td><strong>훅</strong></td><td>이벤트 때 자동 실행되는 명령</td><td>"반드시" 지켜야 하는 규칙, 알림</td><td><code>settings.json</code> 파일들</td><td>문 열면 켜지는 센서 등</td></tr>
+      <tr><td><strong>서브에이전트</strong></td><td>분리된 컨텍스트의 조수</td><td>조사량이 많거나 나눠서 동시에 할 때</td><td><code>.claude/agents/</code>, <code>~/.claude/agents/</code></td><td>요약 보고만 하는 동료</td></tr>
+    </tbody>
+  </table></div>
+  <div class="example"><span class="label">🧪 예시</span>
+    <p>상황: 뭘 써야 할지 헷갈리면 "지금 내가 반복하는 불편함"으로 골라요.</p>
+    <pre>매번 "해요체로 답해줘"라고 치는 중 → CLAUDE.md
+피치덱 만들 때마다 같은 순서를 설명하는 중 → 스킬
+노션 내용을 복사해서 붙여넣는 중 → MCP
+조사 자료가 너무 많아 대화가 무거워짐 → 서브에이전트</pre>
+    <p>결과: 불편함 하나에 부품 하나씩 붙이면 돼요. 처음부터 다 만들 필요는 없어요.</p>
+  </div>
+
+  <p>
+    <a class="ref" href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">공식 문서: 메모리 ↗</a>
+    <a class="ref" href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">공식 문서: 권한 모드 ↗</a>
+    <a class="ref" href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">공식 문서: 스킬 ↗</a>
+    <a class="ref" href="https://code.claude.com/docs/en/mcp" target="_blank" rel="noopener">공식 문서: MCP ↗</a>
+    <a class="ref" href="https://code.claude.com/docs/en/hooks-guide" target="_blank" rel="noopener">공식 문서: 훅 ↗</a>
+    <a class="ref" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">공식 문서: 서브에이전트 ↗</a>
+    <a class="ref" href="https://cc101.axwith.com/ko" target="_blank" rel="noopener">CC101 ↗</a>
+  </p>
+</section>

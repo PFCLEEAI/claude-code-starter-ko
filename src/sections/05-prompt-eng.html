@@ -1,0 +1,187 @@
+<section id="prompt-eng" class="chapter" data-title="프롬프트 엔지니어링" data-emoji="🧪">
+  <h2>프롬프트 엔지니어링 기초: 자주 쓰는 기법 10가지</h2>
+  <div class="tldr"><strong>3줄 요약</strong><ul>
+    <li>프롬프트 엔지니어링은 거창한 기술이 아니라 "AI가 잘 알아듣게 쓰는 요령" 모음이에요.</li>
+    <li>예시 보여주기, 단계별로 생각시키기, 자료와 지시를 태그로 나누기, 출력 모양 정하기가 기본기예요.</li>
+    <li>큰 일은 여러 프롬프트로 나눠 잇고, AI가 스스로 검토하게 하고, 사실은 출처로 확인하세요.</li>
+  </ul></div>
+  <div class="callout note">📌 이 장의 🧪 예시에 나오는 AI 답은 이해를 돕기 위한 예시 답변이에요. 실제 답은 매번 달라요.</div>
+
+  <h3 id="prompt-eng-shots">제로샷 · 원샷 · 퓨샷</h3>
+  <p>샷(shot)은 프롬프트에 넣는 <strong>예시 개수</strong>예요. 예시가 없으면 제로샷, 하나면 원샷, 여러 개면 퓨샷(few-shot, 멀티샷)이라고 불러요.</p>
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  Z["제로샷<br/>지시만"] --> Z2["AI 기본 스타일로 답함"]
+  O["원샷<br/>지시 + 예시 1개"] --> O2["예시 하나를 따라 함"]
+  F["퓨샷<br/>지시 + 예시 여러 개"] --> F2["공통 패턴을 잡아 일관되게 답함"]</pre><figcaption>예시가 늘수록 AI가 내 스타일을 더 정확히 따라 해요.</figcaption></figure>
+  <div class="cards">
+    <div class="card"><h4>제로샷</h4><p>간단하고 흔한 일에 써요.<br><code>대구 서문시장 소개 문장 한 줄 써줘.</code></p></div>
+    <div class="card"><h4>원샷</h4><p>원하는 모양을 하나 보여줘요.<br><code>예: "동성로 | 밤 9시에도 반짝이는 대구의 심장" 이 형식으로 김광석길도 써줘.</code></p></div>
+    <div class="card"><h4>퓨샷</h4><p>브랜드 톤처럼 미묘한 스타일을 맞출 때 써요. 예시는 2~5개를 서로 조금씩 다르게 넣어요. 아래 박스를 보세요.</p></div>
+  </div>
+  <div class="prompt good"><span class="label">✅ 퓨샷 예시</span><pre>우리 브랜드 상품 한 줄 소개는 이런 톤이야.
+- 사과 립밤: "대구 사과처럼, 입술에 가을 한 입"
+- 녹차 클렌저: "세안이 끝나면 숲에서 돌아온 기분"
+- 쌀 토너: "밥심 말고 피부심"
+
+같은 톤으로 "보리 수분크림" 소개 3개 써줘.</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 같은 "보리 수분크림 소개 한 줄"을 예시 없이 한 번, 위처럼 예시 3개를 넣고 한 번 요청했어요. 예시 답변:</p><pre>제로샷: "보리 추출물로 촉촉하게 채워주는 수분크림"
+퓨샷:   "보리차처럼 순하게, 피부에 한 모금"</pre><p>결과: 제로샷은 어느 브랜드에나 붙는 설명이 나오고, 퓨샷은 우리 브랜드처럼 비유를 넣은 짧은 톤을 따라 해요.</p></div>
+
+  <h3 id="prompt-eng-cot">생각의 사슬 (Chain of Thought)</h3>
+  <p>복잡한 문제는 바로 답하게 하면 실수가 잦아요. "단계별로 생각해줘"처럼 답 전에 생각 과정을 거치게 하면 정확도가 올라가요. 이걸 생각의 사슬(Chain of Thought, CoT)이라고 해요.</p>
+  <figure class="diagram"><pre class="mermaid">flowchart TD
+  Q["질문<br/>팝업스토어 어디에 열까?"] --> D["바로 답하기"]
+  D --> D2["그럴듯하지만 근거 없는 답"]
+  Q --> S1["1단계 조건 정리<br/>타깃, 예산, 기간"]
+  S1 --> S2["2단계 후보지 비교"]
+  S2 --> S3["3단계 장단점 따져 결론"]
+  S3 --> A["근거가 보이는 답"]</pre><figcaption>짧은 길은 바로 답하기, 긴 길은 단계별로 생각하기예요. 중간 과정이 보이니 어디가 틀렸는지도 찾기 쉬워요.</figcaption></figure>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>20대 타깃 뷰티 팝업스토어를 대구 동성로, 수성못, 대구역 중 어디에 열지 정하고 싶어.
+바로 답하지 말고 단계별로 생각해줘.
+1) 판단 기준 정하기 2) 후보지별로 기준 점수 매기기 3) 결론과 이유</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 위 팝업스토어 질문을 "단계별로" 없이 보냈을 때와 넣었을 때 답이 달라져요. 예시 답변:</p><pre>바로 답: "동성로가 좋아요. 사람이 많거든요."
+단계별:  1) 기준: 20대 방문, 임대료, 주말 접근성
+         2) 기준마다 동성로 · 수성못 · 대구역 점수 비교
+         3) 결론: 동성로. 임대료가 부담이면 수성못도 검토</pre><p>결과: 단계별 답은 근거가 보여서, 팀원이 "임대료 기준은 빼자"처럼 중간 단계를 짚어 고칠 수 있어요.</p></div>
+  <div class="callout note">📌 요즘 Claude 모델(Opus 5.5, Sonnet 5.5 등)은 답하기 전에 속으로 먼저 생각해요(확장 사고). 그래도 "단계별로"라고 쓰면 생각 과정이 답에 드러나서 어디가 틀렸는지 짚기 쉬워져요. 생각 깊이는 Claude Code에서 <code>/effort</code>로 바꿀 수 있어요. 예: <code>/effort high</code> (모델마다 고를 수 있는 단계가 달라요. 자세한 건 <a href="#commands">명령어</a> 장).</div>
+
+  <h3 id="prompt-eng-role">역할 부여 (Role Prompting)</h3>
+  <p>"너는 ○○야"라고 역할을 주면 AI가 그 분야의 관점과 말투로 답해요. 같은 기획안이라도 누구 눈으로 보느냐에 따라 피드백이 달라져요.</p>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>너는 10년 차 올리브영 MD야.
+아래 신상품 기획안을 입점 심사하듯 읽고, 통과 가능성과 보완할 점 3가지를 말해줘.</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 팀 과제로 쓴 "쌀 토너" 기획안을 역할 없이 한 번, MD 역할을 주고 한 번 봐달라고 했어요. 예시 답변:</p><pre>역할 없이: "전체적으로 잘 썼어요! 타깃을 조금 더 구체화하면 좋겠어요."
+MD 역할:   "비슷한 토너와 뭐가 다른지 한 줄로 안 보여요. 심사에선 그게
+           제일 먼저 걸려요. 가격대와 용량 근거도 보강하세요."</pre><p>결과: 역할을 주면 칭찬 위주의 두루뭉술한 답 대신, 그 일을 하는 사람이 실제로 짚을 만한 지점이 나와요.</p></div>
+  <div class="callout tip">💡 매번 같은 역할과 규칙을 쓴다면 Claude Code의 <code>CLAUDE.md</code>에 적어두세요. 세션마다 자동으로 읽혀요. 자세한 건 <a href="#components">Claude Code 구성요소</a> 장에 있어요.</div>
+
+  <h3 id="prompt-eng-structure">구조화: 마크다운 · XML 태그</h3>
+  <p>자료와 지시가 한 덩어리로 섞이면 AI가 어디까지가 자료인지 헷갈려요. 마크다운 제목(<code>##</code>)이나 <code>&lt;자료&gt;…&lt;/자료&gt;</code> 같은 태그로 칸을 나눠 주세요.</p>
+  <div class="analogy"><strong>비유</strong> 서류를 책상에 흩어놓고 "이거 정리해줘"라고 하는 것과, "계약서" "영수증" 라벨을 붙인 서류철을 건네는 것의 차이예요. 태그 이름은 한글이든 영어든 상관없고, 열고 닫는 이름만 맞으면 돼요.</div>
+  <pre><code>&lt;자료&gt;
+(여기에 고객 리뷰 30개 붙여넣기)
+&lt;/자료&gt;
+
+&lt;지시&gt;
+위 자료에서 불만을 주제별로 묶고, 가장 많이 나온 3개를 골라줘.
+&lt;/지시&gt;
+
+&lt;형식&gt;
+주제 | 언급 수 | 대표 리뷰 한 줄
+&lt;/형식&gt;</code></pre>
+  <p>마크다운으로는 <code>## 자료</code>, <code>## 지시</code>, <code>## 형식</code>처럼 제목 줄로 칸을 나눠도 돼요.</p>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 대구 로컬 굿즈 스토어의 고객 리뷰 30개를 위 틀의 &lt;자료&gt; 칸에 붙여넣고 보냈어요. 예시 답변:</p><pre>주제 | 언급 수 | 대표 리뷰 한 줄
+배송 지연 | 9 | "주문하고 일주일 넘게 걸렸어요"
+포장 | 6 | "선물용인데 박스가 찌그러져 왔어요"
+가격 | 4 | "굿즈치고 좀 비싸요"</pre><p>결과: 태그 없이 섞어 보내면 리뷰 전체를 길게 요약해 올 때가 있어요. 칸을 나누면 &lt;형식&gt;에 적은 모양 그대로 나와요. AI가 센 '언급 수'는 틀릴 수 있으니 발표에 쓸 숫자는 직접 세어 확인하세요.</p></div>
+
+  <h3 id="prompt-eng-format">출력 형식 정하기: 표 · JSON · 체크리스트</h3>
+  <p>결과를 어디에 쓸지 먼저 생각하고 그 모양을 지정하세요. 회의 자료면 표, 다른 도구(n8n, 웹사이트)에 넣을 거면 <a href="#glossary-list">JSON</a>(프로그램끼리 데이터를 주고받을 때 쓰는 '이름: 값' 모양의 글 형식), 할 일이면 체크리스트가 편해요.</p>
+  <div class="cards">
+    <div class="card"><h4>표</h4><p><code>열은 장소 | 추천 시간대 | 한 줄 팁 으로 표 만들어줘.</code></p></div>
+    <div class="card"><h4>JSON</h4><p><code>{"name": "", "category": "", "price": 0} 형식의 JSON 배열로만 답해줘. 설명 문장은 빼고.</code></p></div>
+    <div class="card"><h4>체크리스트</h4><p><code>팝업 오픈 전날 할 일을 - [ ] 체크리스트로 10개 이내로.</code></p></div>
+  </div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 지역 관광 콘텐츠 팀이 n8n 자동화에 넣을 장소 목록이 필요해요.</p><pre>대구 근대골목 투어 장소 3곳을
+{"name": "", "category": "", "tip": ""} 형식의 JSON 배열로만 답해줘. 설명 문장은 빼고.</pre><p>결과(예시 답변): <code>[{"name": "청라언덕", "category": "역사", "tip": "…"}, …]</code>처럼 인사말 없이 JSON만 와서, 복사해서 바로 다음 단계에 넣을 수 있어요.</p></div>
+
+  <h3 id="prompt-eng-chain">프롬프트 체이닝 (Prompt Chaining)</h3>
+  <p>큰 일을 한 프롬프트에 몰아넣으면 품질이 떨어져요. 단계를 나눠 앞 단계 결과를 다음 프롬프트에 넘기는 방식을 프롬프트 체이닝이라고 해요.</p>
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["1 조사<br/>대구 관광 트렌드"] --> B["2 요약<br/>핵심 5가지"]
+  B --> C["3 기획<br/>콘텐츠 아이디어 3개"]
+  C --> D["4 제작<br/>숏폼 대본"]
+  D --> E{"5 검토<br/>기준 통과?"}
+  E -->|"아니요"| D
+  E -->|"네"| F["완성"]</pre><figcaption>각 단계 결과를 눈으로 확인하고 다음으로 넘기니, 중간에 틀어져도 그 단계만 다시 하면 돼요.</figcaption></figure>
+  <div class="analogy"><strong>비유</strong> 요리를 "재료 손질 → 밑간 → 굽기 → 플레이팅"으로 나누는 것과 같아요. 한 번에 "맛있는 요리 해줘"보다 단계마다 맛을 보는 쪽이 실패가 적어요. 이 패턴은 <a href="#agents">에이전트</a> 장의 워크플로우 패턴으로 이어져요.</div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 지역 관광 숏폼 과제를 한 번에 시키지 않고 세 번에 나눠 보냈어요.</p><pre>1번: 내가 붙여넣은 대구 관광 기사 5개를 읽고 트렌드를 정리해줘.
+2번: 방금 정리한 트렌드 중 20대에게 먹힐 것 3개만 골라 이유를 말해줘.
+3번: 그중 두 번째로 30초 릴스 대본을 써줘. 장면 | 화면 | 자막 표로.</pre><p>결과: 2번에서 고른 트렌드가 마음에 안 들면 2번만 다시 시키면 돼요. 처음부터 전부 다시 쓸 필요가 없어요.</p></div>
+
+  <h3 id="prompt-eng-critique">셀프 검토 (Self-critique)</h3>
+  <p>AI는 첫 답을 스스로 다시 보게 하면 꽤 많은 실수를 잡아요. 검토 기준을 구체적으로 주는 게 핵심이에요.</p>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>방금 쓴 캡션 3개를 아래 기준으로 10점 만점 채점해줘.
+1) 첫 줄만 보고도 멈춰서 읽게 되나
+2) 20대가 실제로 쓰는 말투인가
+3) 효능을 단정하는 표현이 없나
+7점 미만 항목은 이유를 말하고 고친 버전을 다시 보여줘.</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 올리브영 선크림 캡션 3개를 받은 뒤 위 채점 프롬프트를 보냈어요. 예시 답변:</p><pre>캡션 2번 · 기준 3) 4점: "하루 종일 피부를 지켜줘요"는 효능을 단정하는 표현이에요.
+고친 버전: "등굣길부터 저녁 약속까지 가볍게 함께해요"</pre><p>결과: 내가 놓친 금지 표현을 AI가 먼저 찾아 고쳐 와요. 그래도 올리기 전 최종 확인은 직접 해요.</p></div>
+
+  <h3 id="prompt-eng-interview">인터뷰형 프롬프트 (AI가 질문하기)</h3>
+  <p>아이디어가 흐릿할 때는 AI가 나를 인터뷰하게 하세요. 한 번에 하나씩 묻고 추천 답을 같이 주게 하면, 답하기 쉬우면서 빠진 부분이 채워져요. 수업의 "인터뷰형 spec.md 작성"이 바로 이 방식이에요.</p>
+  <figure class="diagram"><pre class="mermaid">flowchart LR
+  A["흐릿한 아이디어"] --> B["AI 질문 1개<br/>+ 추천 답"]
+  B --> C["내 답변"]
+  C --> D{"정보 충분?"}
+  D -->|"아니요"| B
+  D -->|"네"| E["정리된 기획서<br/>spec.md"]</pre><figcaption>질문 하나, 답 하나씩 주고받다 보면 기획서가 저절로 채워져요.</figcaption></figure>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>대구 로컬 굿즈 온라인 스토어를 만들고 싶어.
+기획서(spec.md)를 쓰기 전에 나를 인터뷰해줘.
+- 질문은 한 번에 하나씩
+- 각 질문마다 네가 추천하는 답과 이유를 같이
+- 충분히 모였다고 판단되면 spec.md 초안으로 정리해줘</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 위 프롬프트를 보내고 상품, 결제, 배송 질문에 하나씩 답했더니 마지막에 spec.md 초안이 정리돼 왔어요. 예시 답변:</p><pre># 대구 로컬 굿즈 스토어 spec.md (초안)
+## 상품: 사과 굿즈 3종으로 시작
+## 결제: 카드 결제 한 가지만
+## 배송: 택배, 주문 후 3일 안에 발송
+## 아직 정할 것: 반품 규칙</pre><p>결과: 문답에서 내가 고른 답이 항목별로 정리되고, 아직 비어 있는 부분도 따로 보여요.</p></div>
+
+  <h3 id="prompt-eng-hallucination">할루시네이션 확인하기</h3>
+  <p>할루시네이션(hallucination)은 AI가 없는 사실을 그럴듯하게 지어내는 현상이에요. 숫자, 날짜, 인물, 출처 링크에서 특히 자주 생겨요.</p>
+  <figure class="diagram"><pre class="mermaid">flowchart TD
+  A["AI 답변"] --> B["출처 요청<br/>링크와 근거 문장"]
+  B --> C["링크 직접 열어 확인"]
+  C --> D{"원문과 일치?"}
+  D -->|"네"| E["사용"]
+  D -->|"아니요"| F["삭제하거나<br/>다른 출처로 교차검증"]</pre><figcaption>AI가 준 출처도 틀릴 수 있어요. 마지막 확인은 사람이 원문을 직접 열어서 해요.</figcaption></figure>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>각 주장마다 출처 링크와 근거가 된 문장을 같이 적어줘.
+확실하지 않은 내용은 "확인 필요"라고 표시하고, 모르면 모른다고 말해도 돼.</pre></div>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 피치덱에 넣을 "대구 연간 관광객 수"를 위 프롬프트와 함께 물었어요. 예시 답변:</p><pre>- 지역별 관광 통계는 한국관광 데이터랩에서 볼 수 있어요. (링크)
+- 작년 대구 방문객 수: 확인 필요. 위 사이트에서 직접 확인해 주세요.</pre><p>결과: "확인 필요"가 붙은 칸은 링크를 직접 열어 숫자를 찾아 채워요. AI가 숫자를 줬더라도 원문과 맞는지 보고 나서 슬라이드에 넣어요.</p></div>
+  <div class="callout warn">⚠️ 발표 자료나 상세페이지에 들어갈 숫자(매출, 방문객 수, 성분 함량)는 반드시 원문을 열어 확인하세요. 중요한 내용은 다른 AI나 검색으로 한 번 더 교차검증하면 안전해요.</div>
+
+  <h3 id="prompt-eng-image">이미지 · 영상 프롬프트 기초</h3>
+  <p>이미지 생성 AI에는 "예쁜 화장품 사진"보다 장면을 묘사하듯 써야 해요. 아래 다섯 칸을 채우면 기본은 해요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>칸</th><th>뜻</th><th>예</th></tr></thead>
+    <tbody>
+      <tr><td>주제</td><td>무엇을 찍나</td><td>투명한 유리병에 담긴 연두색 토너</td></tr>
+      <tr><td>구도</td><td>어디서 어떻게 보나</td><td>정면 클로즈업, 제품이 화면 중앙</td></tr>
+      <tr><td>조명</td><td>빛의 방향과 분위기</td><td>창가 아침 햇살, 부드러운 그림자</td></tr>
+      <tr><td>스타일</td><td>사진인지 그림인지, 느낌</td><td>미니멀 제품 사진, 파스텔 톤</td></tr>
+      <tr><td>비율</td><td>화면 모양</td><td>인스타 피드 4:5, 릴스·쇼츠 9:16</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prompt bad"><span class="label">😕 이렇게 말고</span><pre>올리브영에 어울리는 토너 사진 만들어줘.</pre></div>
+  <div class="prompt good"><span class="label">✅ 이렇게</span><pre>투명한 유리병에 담긴 연두색 녹차 토너, 병 옆에 싱그러운 녹차 잎 몇 장.
+정면 클로즈업, 제품은 화면 중앙.
+창가로 들어오는 아침 햇살, 부드러운 그림자.
+미니멀한 제품 사진 스타일, 밝은 파스텔 배경, 글자 없음.
+비율 4:5.</pre></div>
+  <p>영상은 여기에 <strong>움직임</strong>(무엇이 어떻게 움직이나)과 <strong>카메라</strong>(천천히 다가가기, 옆으로 돌기)를 더해요.</p>
+  <div class="example"><span class="label">🧪 예시</span><p>상황: 위 녹차 토너 사진을 릴스용 짧은 영상으로 바꾸고 싶어요. 이미지 프롬프트에 움직임과 카메라를 더해요.</p><pre>투명한 유리병에 담긴 연두색 녹차 토너, 창가 아침 햇살.
+움직임: 병 위로 물방울 하나가 천천히 떨어지고, 녹차 잎이 살짝 흔들린다.
+카메라: 아주 천천히 제품 쪽으로 다가간다.
+비율 9:16.</pre><p>결과: 멈춘 사진 대신 물방울과 잎이 움직이는 세로 영상이 나와요. 길이와 비율은 도구 설정 화면에서도 한 번 더 맞춰 주세요.</p></div>
+  <div class="callout note">📌 Nano Banana, Kling, Higgsfield는 도구마다 잘 먹히는 표현과 비율·길이 설정이 달라요. 막막하면 Claude에게 "이 상품 설명으로 이미지 프롬프트를 주제·구도·조명·스타일·비율로 나눠 3개 써줘"라고 먼저 맡겨 보세요.</div>
+
+  <h3 id="prompt-eng-summary">한눈에 정리</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>기법</th><th>언제</th></tr></thead>
+    <tbody>
+      <tr><td>제로샷</td><td>간단하고 흔한 일</td></tr>
+      <tr><td>원샷 · 퓨샷</td><td>정해진 형식이나 톤을 맞출 때</td></tr>
+      <tr><td>생각의 사슬</td><td>비교, 판단, 계산이 필요할 때</td></tr>
+      <tr><td>역할 부여</td><td>전문가 관점이 필요할 때</td></tr>
+      <tr><td>구조화 태그</td><td>자료가 길거나 여러 개일 때</td></tr>
+      <tr><td>출력 형식</td><td>결과를 바로 다른 데 쓸 때</td></tr>
+      <tr><td>프롬프트 체이닝</td><td>큰 일을 단계로 나눌 때</td></tr>
+      <tr><td>셀프 검토</td><td>제출 전 품질 점검</td></tr>
+      <tr><td>인터뷰형</td><td>아이디어가 흐릿할 때</td></tr>
+      <tr><td>할루시네이션 확인</td><td>숫자, 사실, 출처가 중요할 때</td></tr>
+      <tr><td>이미지 · 영상</td><td>생성 AI로 비주얼 만들 때</td></tr>
+    </tbody>
+  </table></div>
+  <p><a class="ref" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic 프롬프트 엔지니어링 가이드 ↗</a></p>
+</section>
